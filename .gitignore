@@ -1,0 +1,17 @@
+*.aux
+*.bbl*.blg
+*.log
+*.out
+*.toc
+*.pdf
+/venv/
+__pycache__/
+.env
+*.log
+*.lof
+*.idx
+*.gz
+*.blg
+*.bbl
+*.brf
+*.lot
