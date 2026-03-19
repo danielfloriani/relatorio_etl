@@ -335,8 +335,24 @@
 % ---
 \begin{apendicesenv}
 
-\chapter{Título Opcional}
-Textos elaborados pelo próprio autor, a fim de complementar a sua argumentação
+\chapter{Glossário de termos técnicos}
+\begin{itemize}
+    \item \textbf{Arquitetura \textit{Medallion}:} Padrão de projeto de organização de dados que divide os arquivos em camadas lógicas (comumente chamadas de \textit{Bronze, Silver} e \textit{Gold}), com o objetivo de melhorar progressivamente a estrutura e a qualidade das informações a cada etapa do processamento.
+    
+    \item \textbf{Camada \textit{Bronze} (L0):} Camada inicial de armazenamento onde os dados brutos (\textit{raw data}) são mantidos em seu estado original, exatamente como foram extraídos das fontes, sem aplicação de filtros ou transformações estruturais.
+    
+    \item \textbf{Camada \textit{Silver} (L1):} Camada intermediária na qual os dados provenientes da camada \textit{Bronze} passam por processos de limpeza, padronização, deduplicação e validação de qualidade contra contratos predefinidos.
+    
+    \item \textbf{Camada \textit{Gold} (L2):} Camada final onde os dados, já limpos e validados, são agregados e transformados com base em regras de negócio específicas, ficando prontos e otimizados para o consumo analítico e a geração de relatórios.
+    
+    \item \textbf{Contrato de Dados (\textit{Data Contract}):} Acordo técnico e formal que define a estrutura, o formato, os padrões de qualidade e o comportamento esperado dos dados na transição entre sistemas ou camadas.
+    
+    \item \textbf{\textit{Parser}:} Algoritmo ou rotina desenvolvida para analisar uma estrutura de dados de entrada (como um arquivo de texto, CSV ou planilha) e extrair os parâmetros e informações relevantes de forma legível para o sistema.
+    
+    \item \textbf{\textit{Pipeline} de Dados:} Conjunto automatizado de processos e fluxos que realiza a extração, o processamento, a validação e o carregamento de dados de um sistema de origem para um ambiente de destino.
+    
+    \item \textbf{\textit{Schema} (Esquema):} Estrutura lógica que atua como a ferramenta de validação de um contrato de dados, especificando os nomes das colunas, os tipos de dados exigidos (como inteiro, texto ou data) e as restrições de obrigatoriedade.
+\end{itemize}
 
 \end{apendicesenv}
 % ---
