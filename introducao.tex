@@ -1,29 +1,19 @@
+Durante o estágio realizado na Veeries, entre outubro de 2025 e abril de 2026, identificou-se a necessidade de reestruturar a ingestão de dados de fontes externas críticas para o negócio (confidencial). 
+O problema central era a ausência de um fluxo de dados padronizado, o que comprometia a rastreabilidade e a confiabilidade das informações consumidas pelas áreas de análise.
+Para solucionar essa questão, atuei diretamente no desenvolvimento de um pipeline de dados automatizado, aplicando fundamentos de automação de processos do curso de Engenharia de Controle e Automação.
 
+\section*{Objetivos e Metodologia}
 
-A Veeries é uma empresa inserida no agronegócio. 
-Oferece produtos relacionados à análise da produção, fluxo e operações de commodities, bem como fluxo e operações dos suprimentos e infra-estrutura relacionados a este mercado. 
-
-A empresa conta com cerca de 20 funcionários e pode ser subdividida em duas equipes: uma de Analistas de mercado e outra de desenvolvedores, como assim são chamados na organização. 
-Próximo ao produto final, os analistas são responsáveis por analisar as informações coletadas, fazer projeções e montar relatórios. 
-Estritamente ligados ao processamento da informação, o time de desenvolvedores é composto por engenheiros, cientistas da computação e estudantes de áreas correlatas. 
-São responsáveis pela melhoria do processo, desde a obtenção dos dados até a apresentação ao cliente.
-
-ETL, sigla para Extraction, Transform, Load (extração, transformação e carregamento) é o processo de integração de dados provindo de uma ou mais fontes de informação. 
-Inclui processos de limpeza, organização, validação e carregamento em um repositório organizado e é util para consolidar e garantir dados brutos.
-
-
-
-
-
-
-Os dados da fonte de informação, sobretudo o seu nível de organização, dita o quão complexo vai ser sua extração. 
-O grau de dificuldade aumenta conforme diminui a clareza da estrutura da informação. 
-Comumente é utilizada a classificação de dados estruturados, dados semi-estruturados e dados não estruturados. 
-Dados estruturados (bancos de dados relacionais, planilhas excel por exemplo) costumam trazer pouco esforço de processamento por conter sua estrutura quase que pronta para consumo em ferramentas de análise.  
-Dados semi-estruturados não se encaixam em tabelas mas possuem marcadores e metadados (tais como saída de leitura de sensores, JSON, XML, logs de sistemas, e-mails). 
-Já os dados não estruturados não possuem formato definido (documentos de texto livre, PDFs, imagens, vídeos) e por isso exigem mais esforço no processamento.
-
-Este projeto de ETL vai lidar com um tipo de dado que se classificaria entre dados não estruturados e semi-estruturados, pois a fonte de informação está disposta em tabelas documentadas em arquivos de texto PDF aonde é possível localizar a posição relativa dos elementos de texto  
+O objetivo geral do projeto foi desenvolver um fluxo robusto de extração, processamento e disponibilização de dados.
+Como objetivos específicos, destaco a construção do fluxo baseada na Arquitetura Medallion (camadas Bronze, Silver e Gold) e a implementação de rigorosas validações de qualidade estrutural.
+\section*{Estrutura do Relatório}
+Para relatar o desenvolvimento e os resultados alcançados, este documento está organizado da seguinte forma:
+\begin{itemize}
+    \item Capítulo 2: Descreve o contexto da empresa e detalha o problema enfrentado com os dados.
+    \item Capítulo 3: Apresenta brevemente os conceitos da Arquitetura Medallion e as técnicas de validação utilizadas.
+    \item Capítulo 4: Expõe a implementação técnica da solução, detalhando a codificação do pipeline (L0 a L2).
+    \item Capítulo 5 e 6: Apresentam os resultados obtidos, a análise crítica dos impactos gerados e as considerações finais.
+\end{itemize}
 
 
 \begin{itemize}
