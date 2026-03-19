@@ -1,29 +1,38 @@
-Durante o estágio realizado na Veeries, entre outubro de 2025 e abril de 2026, identificou-se a necessidade de reestruturar a ingestão de dados de fontes externas críticas para o negócio (confidencial). 
-O problema central era a ausência de um fluxo de dados padronizado, o que comprometia a rastreabilidade e a confiabilidade das informações consumidas pelas áreas de análise.
-Para solucionar essa questão, atuei diretamente no desenvolvimento de um pipeline de dados automatizado, aplicando fundamentos de automação de processos do curso de Engenharia de Controle e Automação.
+% 1. Definição do assunto e o problema a ser abordado no trabalho
+O presente relatório aborda a estruturação e a confiabilidade no consumo de dados corporativos. O problema central a ser resolvido consiste na fragilidade e na falta de padronização durante a ingestão de dados provenientes de fontes externas críticas para o negócio, especificamente os dados de duas fontes confidenciais, tratadas aqui como fonte X e fonte Y.
 
-\section*{Objetivos e Metodologia}
+% 2. Localização do assunto no espaço, no tempo e no contexto do Curso
+Este trabalho foi desenvolvido durante o Estágio Obrigatório realizado na empresa \textbf{[Veeries]}, no período de \textbf{outubro de 2025} a \textbf{abril de 2026}. O projeto insere-se no contexto do curso de Engenharia de Controle e Automação da Universidade Federal de Santa Catarina (UFSC), aplicando conhecimentos da grande área de estruturas e processamento de dados na resolução de problemas práticos.
 
-O objetivo geral do projeto foi desenvolver um fluxo robusto de extração, processamento e disponibilização de dados.
-Como objetivos específicos, destaco a construção do fluxo baseada na Arquitetura Medallion (camadas Bronze, Silver e Gold) e a implementação de rigorosas validações de qualidade estrutural.
+% 3. Importância do assunto e justificativa da escolha
+A confiabilidade dos dados é um fator crítico para a tomada de decisão nas organizações. A ausência de um tratamento adequado pode gerar inconsistências que impactam negativamente as análises gerenciais e estratégicas. A escolha deste tema justifica-se pela oportunidade de aplicar boas práticas de engenharia de dados para mitigar esses riscos, garantindo a integridade e a qualidade das informações disponibilizadas. Cumpre destacar que, ao longo de todo o projeto, atuei de forma direta na idealização, desenvolvimento e codificação dessa arquitetura.
+
+% 4. Objeto geral e objetivos específicos
+\section*{Objetivos}
+O objetivo geral deste estágio foi desenvolver e implementar um \textit{pipeline} automatizado de extração, processamento e validação de dados para as fontes X e fonte Y. Como objetivos específicos, destacam-se:
+\begin{itemize}
+    \item Projetar o fluxo de dados fundamentado na Arquitetura \textit{Medallion} (camadas \textit{Bronze, Silver} e \textit{Gold}).
+    \item Desenvolver rotinas de extração bruta de dados (\textit{parsers} e \textit{ingestion}) a partir de fontes externas.
+    \item Implementar rigorosas validações de qualidade e limpeza estrutural de dados utilizando \textit{schemas} definidos.
+\end{itemize}
+
+% 5. Hipóteses levantadas ou argumentação principal
+A argumentação principal deste trabalho é que a adoção da Arquitetura \textit{Medallion}, aliada à implementação de contratos de dados estritos (validações estruturais na transição entre as camadas), é capaz de garantir um fluxo de informação resiliente, rastreável e confiável, solucionando o problema de despadronização inicial.
+
+% 6. Descrição da metodologia empregada no trabalho
+\section*{Metodologia}
+Conforme as diretrizes estabelecidas pela orientação acadêmica, a metodologia adotada possui um caráter eminentemente prático e aplicado, com foco no relato das técnicas e ferramentas utilizadas, abdicando de um rigor teórico excessivo. Trata-se de um desenvolvimento de \textit{software} em nível industrial (estudo de campo/prático). Para isso, foram criados \textit{scripts} em linguagem Python (\texttt{main\_source\_anda.py} e \texttt{main\_source\_siacesp.py}) orquestrando módulos de processamento progressivos para as camadas L0, L1 e L2 (\texttt{l0\_process.py}, \texttt{l1\_process.py}, \texttt{l2\_process.py}) e regras de validação (\texttt{schemas.py}).
+
+% 7. Alternativas de solução do Problema (com referência bibliográfica)
+Como alternativa de solução frente aos modelos tradicionais de ETL (\textit{Extract, Transform, Load}) executados em lote único (sem etapas intermediárias de validação), optou-se pela Arquitetura \textit{Medallion}. Segundo a literatura atual e documentações técnicas da área de engenharia de dados (como as metodologias propostas pela Databricks), essa abordagem permite o armazenamento dos dados em estados progressivos de refinamento, facilitando a auditoria e o reprocessamento em caso de falhas.
+
+% 8. Apresentação do plano adotado para o desenvolvimento do assunto (capítulos)
 \section*{Estrutura do Relatório}
-Para relatar o desenvolvimento e os resultados alcançados, este documento está organizado da seguinte forma:
+Para descrever o desenvolvimento e os resultados alcançados, o plano adotado para este relatório está organizado da seguinte maneira:
 \begin{itemize}
-    \item Capítulo 2: Descreve o contexto da empresa e detalha o problema enfrentado com os dados.
-    \item Capítulo 3: Apresenta brevemente os conceitos da Arquitetura Medallion e as técnicas de validação utilizadas.
-    \item Capítulo 4: Expõe a implementação técnica da solução, detalhando a codificação do pipeline (L0 a L2).
-    \item Capítulo 5 e 6: Apresentam os resultados obtidos, a análise crítica dos impactos gerados e as considerações finais.
+    \item O \textbf{Capítulo 2} descreve o contexto da empresa, detalhando o ambiente de desenvolvimento e os pormenores do problema motivador do estágio.
+    \item O \textbf{Capítulo 3} apresenta, de forma concisa e prática, os aspectos conceituais da Arquitetura \textit{Medallion} e das técnicas de validação de dados utilizadas na solução.
+    \item O \textbf{Capítulo 4} detalha a implementação técnica, expondo a codificação e os fluxos de informação do \textit{pipeline} ponta a ponta (das configurações globais até o nível 2 de processamento).
+    \item O \textbf{Capítulo 5} expõe os resultados obtidos (pilotos/reais) e promove uma análise crítica profunda sobre os ganhos de confiabilidade alcançados.
+    \item Por fim, o \textbf{Capítulo 6} reúne a síntese interpretada dos resultados, os impactos organizacionais e aponta perspectivas para trabalhos futuros.
 \end{itemize}
-
-
-\begin{itemize}
-\item 	definição do assunto, o problema a ser abordado no trabalho;
-\item 	localização do assunto no espaço, no tempo e no contexto do Curso;
-\item 	importância do assunto e justificativa da escolha;
-\item 	objeto geral e objetivos específicos;
-\item 	hipóteses levantadas ou argumentação principal;
-\item 	descrição da metodologia empregada no trabalho (bibliografia e/ou estudo de campo e/ou de laboratório);
-\item 	as alternativas de solução do Problema, decorrentes de estudo bibliográfico que deverá ficar evidenciado mediante referências;
-\item 	apresentação do plano adotado para o desenvolvimento do assunto, isto é, a descrição do que será tratado em cada um dos capítulos subsequentes.
-\end{itemize}
-
