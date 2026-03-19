@@ -336,22 +336,30 @@
 \begin{apendicesenv}
 
 \chapter{Glossário de termos técnicos}
+Este apêndice tem por objetivo apresentar as definições dos principais termos técnicos, conceitos e jargões da área de Engenharia de Dados utilizados ao longo do texto.
+
 \begin{itemize}
-    \item \textbf{Arquitetura \textit{Medallion}:} Padrão de projeto de organização de dados que divide os arquivos em camadas lógicas (comumente chamadas de \textit{Bronze, Silver} e \textit{Gold}), com o objetivo de melhorar progressivamente a estrutura e a qualidade das informações a cada etapa do processamento.
+    \item \textbf{Arquitetura \textit{Medallion}:} Padrão de projeto de organização de dados que divide os arquivos em camadas lógicas (comumente chamadas de \textit{Bronze, Silver} e \textit{Gold}), com o objetivo de melhorar progressivamente a estrutura e a qualidade das informações a cada etapa do processamento \cite{databricks_medallion}.
     
-    \item \textbf{Camada \textit{Bronze} (L0):} Camada inicial de armazenamento onde os dados brutos (\textit{raw data}) são mantidos em seu estado original, exatamente como foram extraídos das fontes, sem aplicação de filtros ou transformações estruturais.
+    \item \textbf{Camada \textit{Bronze} (L0):} Camada inicial de armazenamento na Arquitetura \textit{Medallion} onde os dados brutos (\textit{raw data}) são mantidos em seu estado original, exatamente como foram extraídos das fontes, sem aplicação de filtros ou transformações estruturais \cite{databricks_medallion}.
     
-    \item \textbf{Camada \textit{Silver} (L1):} Camada intermediária na qual os dados provenientes da camada \textit{Bronze} passam por processos de limpeza, padronização, deduplicação e validação de qualidade contra contratos predefinidos.
+    \item \textbf{Camada \textit{Silver} (L1):} Camada intermediária na qual os dados provenientes da camada \textit{Bronze} passam por processos de limpeza, padronização, deduplicação e validação de qualidade contra contratos predefinidos \cite{databricks_medallion}.
     
-    \item \textbf{Camada \textit{Gold} (L2):} Camada final onde os dados, já limpos e validados, são agregados e transformados com base em regras de negócio específicas, ficando prontos e otimizados para o consumo analítico e a geração de relatórios.
+    \item \textbf{Camada \textit{Gold} (L2):} Camada final onde os dados, já limpos e validados, são agregados e transformados com base em regras de negócio específicas, ficando prontos e otimizados para o consumo analítico e a geração de relatórios \cite{databricks_medallion}.
     
-    \item \textbf{Contrato de Dados (\textit{Data Contract}):} Acordo técnico e formal que define a estrutura, o formato, os padrões de qualidade e o comportamento esperado dos dados na transição entre sistemas ou camadas.
+    \item \textbf{Contrato de Dados (\textit{Data Contract}):} Acordo técnico e formal que define a estrutura, o formato, os padrões de qualidade e o comportamento esperado dos dados na transição entre sistemas ou camadas para garantir a confiabilidade do sistema \cite{kleppmann17}.
     
-    \item \textbf{\textit{Parser}:} Algoritmo ou rotina desenvolvida para analisar uma estrutura de dados de entrada (como um arquivo de texto, CSV ou planilha) e extrair os parâmetros e informações relevantes de forma legível para o sistema.
+    \item \textbf{ETL (\textit{Extract, Transform, Load}):} Processo tradicional de integração de dados que envolve a extração de informações de diversas fontes, sua transformação para um formato adequado e, por fim, o carregamento em um repositório centralizado, como um \textit{Data Warehouse} \cite{reis22}.
     
-    \item \textbf{\textit{Pipeline} de Dados:} Conjunto automatizado de processos e fluxos que realiza a extração, o processamento, a validação e o carregamento de dados de um sistema de origem para um ambiente de destino.
+    \item \textbf{Ingestão de Dados:} Processo de coleta e importação de dados de diversas origens (como APIs, arquivos em lote ou bancos de dados) para um ambiente de armazenamento ou processamento primário (como a Camada \textit{Bronze}) \cite{reis22}.
     
-    \item \textbf{\textit{Schema} (Esquema):} Estrutura lógica que atua como a ferramenta de validação de um contrato de dados, especificando os nomes das colunas, os tipos de dados exigidos (como inteiro, texto ou data) e as restrições de obrigatoriedade.
+    \item \textbf{\textit{Parser}:} Algoritmo ou rotina desenvolvida para analisar uma estrutura de dados de entrada (como um arquivo de texto, CSV ou planilha) e extrair os parâmetros e informações relevantes de forma legível para o processamento subsequente.
+    
+    \item \textbf{\textit{Pipeline} de Dados:} Conjunto automatizado de processos e fluxos que realiza a extração, o processamento, a validação e o carregamento de dados de um sistema de origem para um ambiente de destino, garantindo o fluxo contínuo das informações \cite{reis22}.
+    
+    \item \textbf{Qualidade de Dados (\textit{Data Quality}):} Medida da condição dos dados baseada em fatores como precisão, completude, consistência e confiabilidade, assegurada através de processos de validação e limpeza implementados durante o fluxo de dados \cite{reis22}.
+    
+    \item \textbf{\textit{Schema} (Esquema):} Estrutura lógica que atua como a ferramenta de validação de um contrato de dados, especificando os nomes das colunas, os tipos de dados exigidos (como inteiro, texto ou data) e as restrições de obrigatoriedade \cite{kleppmann17}.
 \end{itemize}
 
 \end{apendicesenv}
