@@ -2,7 +2,7 @@
 O presente relatório aborda a estruturação e a confiabilidade no consumo de dados corporativos. O problema central a ser resolvido consiste na fragilidade e na falta de padronização durante a ingestão de dados provenientes de fontes externas críticas para o negócio, especificamente os dados de duas fontes confidenciais, tratadas aqui como fonte X e fonte Y.
 
 % 2. Localização do assunto no espaço, no tempo e no contexto do Curso
-Este trabalho foi desenvolvido durante o Estágio Obrigatório realizado na empresa \textbf{[Veeries]}, no período de \textbf{outubro de 2025} a \textbf{abril de 2026}. O projeto insere-se no contexto do curso de Engenharia de Controle e Automação da Universidade Federal de Santa Catarina (UFSC), aplicando conhecimentos da grande área de estruturas e processamento de dados na resolução de problemas práticos.
+Este trabalho foi desenvolvido durante o Estágio Obrigatório realizado na empresa \textbf{Veeries}, no período de \textbf{outubro de 2025} a \textbf{abril de 2026}. O projeto insere-se no contexto do curso de Engenharia de Controle e Automação da Universidade Federal de Santa Catarina (UFSC), aplicando conhecimentos da grande área de estruturas e processamento de dados na resolução de problemas práticos.
 
 % 3. Importância do assunto e justificativa da escolha
 A confiabilidade dos dados é um fator crítico para a tomada de decisão nas organizações. A ausência de um tratamento adequado pode gerar inconsistências que impactam negativamente as análises gerenciais e estratégicas. A escolha deste tema justifica-se pela oportunidade de aplicar boas práticas de engenharia de dados para mitigar esses riscos, garantindo a integridade e a qualidade das informações disponibilizadas. Cumpre destacar que, ao longo de todo o projeto, atuei de forma direta na idealização, desenvolvimento e codificação dessa arquitetura.
@@ -21,10 +21,17 @@ A argumentação principal deste trabalho é que a adoção da Arquitetura \text
 
 % 6. Descrição da metodologia empregada no trabalho
 \section*{Metodologia}
-Conforme as diretrizes estabelecidas pela orientação acadêmica, a metodologia adotada possui um caráter eminentemente prático e aplicado, com foco no relato das técnicas e ferramentas utilizadas, abdicando de um rigor teórico excessivo. Trata-se de um desenvolvimento de \textit{software} em nível industrial (estudo de campo/prático). Para isso, foram criados \textit{scripts} em linguagem Python (\texttt{main\_source\_anda.py} e \texttt{main\_source\_siacesp.py}) orquestrando módulos de processamento progressivos para as camadas L0, L1 e L2 (\texttt{l0\_process.py}, \texttt{l1\_process.py}, \texttt{l2\_process.py}) e regras de validação (\texttt{schemas.py}).
+A metodologia adotada possui um caráter eminentemente prático e aplicado, 
+com foco no relato das técnicas e ferramentas utilizadas, abdicando de um rigor teórico excessivo. 
+Trata-se de um desenvolvimento de \textit{software} em nível de produção (estudo de campo/prático). 
+Para isso, foram criados \textit{scripts} em linguagem Python (\texttt{main\_source\_X.py} e \texttt{main\_source\_Y.py}) 
+orquestrando módulos de processamento progressivos para as camadas L0, L1 e L2 (\texttt{l0\_process.py}, \texttt{l1\_process.py}, \texttt{l2\_process.py}) 
+e regras de validação (\texttt{schemas.py}).
 
 % 7. Alternativas de solução do Problema (com referência bibliográfica)
-Como alternativa de solução frente aos modelos tradicionais de ETL (\textit{Extract, Transform, Load}) executados em lote único (sem etapas intermediárias de validação), optou-se pela Arquitetura \textit{Medallion}. Segundo a literatura atual e documentações técnicas da área de engenharia de dados (como as metodologias propostas pela Databricks), essa abordagem permite o armazenamento dos dados em estados progressivos de refinamento, facilitando a auditoria e o reprocessamento em caso de falhas.
+Como alternativa de solução frente aos modelos tradicionais de ETL (\textit{Extract, Transform, Load}) executados em lote único (sem etapas intermediárias de validação), 
+optou-se pela Arquitetura \textit{Medallion}. 
+Essa abordagem permite o armazenamento dos dados em estados progressivos de refinamento, facilitando a auditoria e o reprocessamento em caso de falhas \cite{databricks_medallion}.
 
 % 8. Apresentação do plano adotado para o desenvolvimento do assunto (capítulos)
 \section*{Estrutura do Relatório}
