@@ -1,26 +1,21 @@
-\chapter{Capítulo 2}
+\chapter{A Empresa e o Problema} 
 
-A Veeries é uma empresa inserida no agronegócio. 
-Oferece produtos relacionados à análise da produção, fluxo e operações de commodities, bem como fluxo e operações dos suprimentos e infra-estrutura relacionados a este mercado. 
+A Veeries é uma empresa inserida no agronegócio. Oferece produtos relacionados à análise da produção, fluxo e operações de commodities, bem como fluxo e operações dos suprimentos e infra-estrutura relacionados a este mercado. A empresa conta com cerca de 20 funcionários e pode ser subdividida em duas equipes: uma de Analistas de Mercado e outra de Desenvolvedores, como assim são chamados na organização. 
 
-A empresa conta com cerca de 20 funcionários e pode ser subdividida em duas equipes: uma de Analistas de mercado e outra de desenvolvedores, como assim são chamados na organização. 
-Próximo ao produto final, os analistas são responsáveis por analisar as informações coletadas, fazer projeções e montar relatórios. 
-Estritamente ligados ao processamento da informação, o time de desenvolvedores é composto por engenheiros, cientistas da computação e estudantes de áreas correlatas. 
-São responsáveis pela melhoria do processo, desde a obtenção dos dados até a apresentação ao cliente.
+Próximo ao produto final, os analistas são responsáveis por analisar as informações coletadas, fazer projeções e montar relatórios. Estritamente ligados ao processamento da informação, o time de desenvolvedores é composto por engenheiros, cientistas da computação e estudantes de áreas correlatas. São responsáveis pela melhoria do processo, desde a obtenção dos dados até a apresentação ao cliente. 
 
-ETL, sigla para Extraction, Transform, Load (extração, transformação e carregamento) é o processo de integração de dados provindo de uma ou mais fontes de informação. 
-Inclui processos de limpeza, organização, validação e carregamento em um repositório organizado e é util para consolidar e garantir dados brutos.
+ETL, sigla para \textit{Extraction, Transform, Load} (extração, transformação e carregamento), é o processo de integração de dados provindo de uma ou mais fontes de informação. Inclui processos de limpeza, organização, validação e carregamento em um repositório organizado e é útil para consolidar e garantir dados brutos. 
 
-Os dados da fonte de informação, sobretudo o seu nível de organização, dita o quão complexo vai ser sua extração. 
-O grau de dificuldade aumenta conforme diminui a clareza da estrutura da informação. 
-Comumente é utilizada a classificação de dados estruturados, dados semi-estruturados e dados não estruturados. 
-Dados estruturados (bancos de dados relacionais, planilhas excel por exemplo) costumam trazer pouco esforço de processamento por conter sua estrutura quase que pronta para consumo em ferramentas de análise.  
-Dados semi-estruturados não se encaixam em tabelas mas possuem marcadores e metadados (tais como saída de leitura de sensores, JSON, XML, logs de sistemas, e-mails). 
-Já os dados não estruturados não possuem formato definido (documentos de texto livre, PDFs, imagens, vídeos) e por isso exigem mais esforço no processamento.
+Os dados da fonte de informação, sobretudo o seu nível de organização, ditam o quão complexa vai ser sua extração. O grau de dificuldade aumenta conforme diminui a clareza da estrutura da informação. Comumente é utilizada a classificação de dados estruturados, dados semi-estruturados e dados não estruturados. Dados estruturados (bancos de dados relacionais, planilhas Excel, por exemplo) costumam trazer pouco esforço de processamento por conter sua estrutura quase que pronta para consumo em ferramentas de análise. Dados semi-estruturados não se encaixam em tabelas, mas possuem marcadores e metadados (tais como saída de leitura de sensores, JSON, XML, logs de sistemas, e-mails). Já os dados não estruturados não possuem formato definido (documentos de texto livre, PDFs, imagens, vídeos) e por isso exigem mais esforço no processamento. 
 
-Este projeto de ETL vai lidar com um tipo de dado que se classificaria entre dados não estruturados e semi-estruturados, pois a fonte de informação está disposta em tabelas documentadas em arquivos de texto PDF aonde é possível localizar a posição relativa dos elementos de texto  
+Este projeto de ETL lida com um tipo de dado que se classificaria entre dados não estruturados e semi-estruturados, pois a fonte de informação primária está disposta em tabelas documentadas em arquivos de texto PDF, onde é possível localizar a posição relativa dos elementos de texto.
 
+\section{O Problema de Extração e Validação}
 
-Descrição da empresa, processos, layouts, problemas, indicadores existentes, etc.
+Historicamente na Veeries, a extração de dados oriundos de duas fontes externas essenciais para o mercado (tratadas de forma confidencial neste relatório como Fonte X e Fonte Y) representava um severo gargalo operacional. Os arquivos, recebidos com uma frequência mensal, exigiam uma atividade de extração estritamente manual por parte da equipe de analistas. 
 
-No Capítulo 2, deve-se fazer uma descrição da empresa, processos, layouts, problemas, etc., ou seja, mais detalhadamente motivar e enquadrar o problema dentro do que proporão (a ser descrito no próximo capítulo).
+O fluxo de trabalho consistia na consulta visual dos arquivos em formato PDF e na transcrição manual dos valores e tabelas para planilhas do Excel. Por se tratar de um processo rudimentar e não estruturado, a atividade era extremamente morosa: consumia-se, em média, uma hora de trabalho humano focado apenas para a extração de cada relatório que chegava, sem contabilizar o tempo adicional necessário para higienizar e consumir os dados dessas planilhas despadronizadas.
+
+Além do elevado custo de tempo, esse modelo manual era altamente suscetível a falhas humanas. Não havia uma validação sistêmica clara ou contratos de dados que garantissem que a extração manual havia ocorrido sem erros de digitação ou deslocamento de linhas. Como consequência direta do esforço desproporcional exigido e da baixa confiabilidade do processo, essas fontes de informação acabavam sendo pouco consideradas ou subutilizadas nas análises de mercado da empresa.
+
+É exatamente para solucionar esse gargalo, automatizando a extração mensal dos PDFs e garantindo a confiabilidade da informação por meio de validações estruturais, que o desenvolvimento de um \textit{pipeline} de dados robusto se fez necessário, tema que será detalhado nos capítulos a seguir.
