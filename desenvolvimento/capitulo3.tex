@@ -1,6 +1,39 @@
-\chapter{Capítulo 3}
+\chapter{Aspectos Conceituais} 
 
-Aspectos conceituais: "teorias", modelos, etc. que usaram na solução do problema e suas justificativas  para  o  seu  uso  (e  não  o  de outras,  que  teoricamente  teriam  sido  estudadas  e comparadas, para então se decidir pelo seu uso).
+Para solucionar o problema da extração manual e garantir a confiabilidade dos dados ingeridos pela Veeries, fez-se necessário o uso de padrões arquiteturais consolidados na área de engenharia de dados. Este capítulo apresenta, de forma prática, os conceitos de \textit{pipelines} de dados, a Arquitetura \textit{Medallion} e a utilização de \textit{schemas} como contratos de dados, fundamentando as escolhas técnicas implementadas na solução.
 
-Onde são formalizados o problema e as técnicas para a sua solução. Devem-se apresentar os aspectos conceituais: teorias gerais que usaram na solução do problema e suas breves análises (uma vez que algumas delas ou todas as apresentadas aqui serão posteriormente mencionadas nos próximos capítulos, quando se discorrerá sobre o que foi efetivamente realizado).
-Dependendo do caso pode ser necessário mais de um capítulo para tal. 
+\section{Pipelines e Qualidade de Dados}
+
+Um \textit{pipeline} de dados consiste em um conjunto automatizado de processos que realiza a extração, o processamento, a validação e o carregamento de informações de um sistema de origem para um ambiente de destino \cite{polisetty23}. Em oposição aos processos manuais e rudimentares, a adoção de fluxos automatizados garante a continuidade da informação e mitiga drasticamente a ocorrência de falhas humanas \cite{reis22}.
+
+A qualidade dos dados (\textit{Data Quality}) é o objetivo central dessas rotinas estruturadas, sendo uma medida avaliada com base em fatores como precisão, completude, consistência e confiabilidade \cite{polisetty23}. No contexto do processamento de dados não estruturados e semi-estruturados — como a leitura e extração de tabelas em arquivos PDF —, a automação do fluxo é o primeiro passo obrigatório para estabelecer a confiabilidade do que será entregue à equipe de analistas.
+
+\section{Arquitetura \textit{Medallion}}
+
+Para organizar o \textit{pipeline} de maneira escalável, de fácil manutenção e rastreável, optou-se pela utilização da Arquitetura \textit{Medallion}. Trata-se de um padrão de projeto de organização de dados que divide os arquivos e processamentos em camadas lógicas, com o objetivo de melhorar progressivamente a estrutura e a qualidade das informações a cada nova etapa \cite{databricks_medallion, gujjala_medallion}.
+
+Nesta arquitetura, a transição e o refinamento dos dados ocorrem na seguinte divisão de camadas:
+
+\begin{itemize}
+    \item \textbf{Camada \textit{Bronze} (L0):} Consiste na camada inicial de armazenamento, atuando como o ambiente de ingestão bruta (\textit{raw data}). Os dados extraídos das fontes são mantidos em seu estado original, sem a aplicação de filtros ou transformações estruturais. Isso garante o registro histórico exato do que foi recebido, permitindo a auditoria e o reprocessamento seguro em caso de falhas nas etapas posteriores \cite{gujjala_medallion}.
+    
+    \item \textbf{Camada \textit{Silver} (L1):} Trata-se da camada intermediária. Nela, os dados provenientes da camada \textit{Bronze} são submetidos a rigorosos processos de limpeza, padronização, deduplicação e, principalmente, validação contra contratos predefinidos. É o estágio onde a informação deixa de ser um dado bruto e passa a ser um dado confiável e estruturado \cite{gujjala_medallion}.
+    
+    \item \textbf{Camada \textit{Gold} (L2):} É a camada final de processamento do repositório. Os dados, já limpos e validados, são agregados e transformados conforme as regras abrangentes da organização, ficando otimizados e prontos para o consumo analítico \cite{databricks_medallion}.
+\end{itemize}
+
+\section{Camada de Apresentação (\textit{Views}) e Versatilidade}
+
+Embora a camada \textit{Gold} finalize o tratamento da informação, a entrega direta de tabelas físicas aos usuários analistas pode gerar engessamento. Para solucionar isso, as modernas arquiteturas de engenharia de dados adotam uma Camada de Apresentação (frequentemente materializada através de \textit{Views} lógicas) operando sobre a camada \textit{Gold} \cite{reis22}. 
+
+Uma diretriz de projeto fundamental adotada neste trabalho foi a de propagar o máximo de campos e informações viáveis extraídas da fonte primária até a camada anterior à apresentação (L2). A premissa central de preservar a abrangência e a granularidade atômica dos dados garante uma extrema versatilidade ao \textit{pipeline} \cite{kimball13}. 
+
+Se o cliente final (analista de mercado) alterar seus requisitos de negócio e solicitar a visualização de uma coluna extraída do PDF que não havia sido prevista nos relatórios iniciais, essa arquitetura evita retrabalho. Como o dado já foi extraído, validado e preservado até a camada L2, não há necessidade de reconstruir os \textit{scripts} de ingestão: basta editar os limites da \textit{View} para passar a expor a nova métrica. Esse desacoplamento entre armazenamento estruturado e apresentação final eleva a resiliência operacional da solução.
+
+\section{Contratos de Dados e \textit{Schemas}}
+
+Um dos principais desafios na ingestão de arquivos externos é a mudança inesperada na estrutura original dos dados, como a alteração de colunas em uma planilha ou o reposicionamento de valores em um PDF. Para evitar que essas alterações corrompam silenciosamente os relatórios finais da empresa, utilizam-se os Contratos de Dados (\textit{Data Contracts}), que são acordos técnicos estritos definindo o formato, a estrutura e a tipagem esperada das informações na transição entre as camadas do \textit{pipeline} \cite{kleppmann17, armbrust20}.
+
+A principal ferramenta lógica para impor o cumprimento desses contratos é o \textit{Schema} (Esquema). O \textit{schema} especifica claramente os nomes das colunas, os tipos de dados exigidos (como números de ponto flutuante, inteiros ou datas) e as restrições de obrigatoriedade \cite{liao20}. 
+
+Ao se aplicar a imposição de esquemas (\textit{schema enforcement}) na transição para a camada \textit{Silver}, o sistema atua como uma barreira de segurança: registros que não cumprem os requisitos estruturais preestabelecidos são bloqueados ou sinalizados para correção. Essa prática é essencial para lidar com a evolução estrutural dos dados, protegendo o sistema contra quebras e garantindo que apenas dados de altíssima integridade fluam para as \textit{Views} de apresentação \cite{armbrust20}.
