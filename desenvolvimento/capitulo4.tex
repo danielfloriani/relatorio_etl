@@ -23,7 +23,17 @@ A \autoref{fig_arquitetura} ilustra o diagrama esquemático deste fluxo lógico,
 
 \section{Fluxo e Evolução Estrutural dos Arquivos}
 
-Uma diretriz central desta arquitetura foi o isolamento contínuo das fontes de dados durante as etapas de limpeza e validação, a fim de evitar que anomalias em um relatório comprometessem a ingestão do outro. A transição e consolidação da informação ocorrem de maneira gradativa através das camadas:
+Uma diretriz central desta arquitetura foi o isolamento contínuo das fontes de dados durante as etapas de limpeza e validação, a fim de evitar que anomalias em um relatório comprometessem a ingestão do outro. A \autoref{fig_fluxo} detalha visualmente as etapas de processamento e a evolução estrutural dos arquivos dentro do \textit{pipeline}.
+
+\begin{figure}[htb]
+    \caption{\label{fig_fluxo}Fluxo de Processamento de Dados entre as Camadas}
+    \begin{center}
+        \includegraphics[scale=0.25]{imagens/fluxo_processamento.png}
+    \end{center}
+    \legend{Fonte: Elaborado pelo autor.}
+\end{figure}
+
+A transição e consolidação da informação ocorrem de maneira gradativa através das camadas:
 
 \begin{itemize}
     \item \textbf{Camada \textit{Raw} (Crua):} Os arquivos que ingressam nesta camada preservam seu formato nativo (PDF). A granularidade é estritamente unitária: cada arquivo corresponde a um documento em PDF de uma única fonte de informação, retratando uma única data de emissão e um mês de referência específico. Os arquivos são mantidos em diretórios separados por fonte.
@@ -34,5 +44,3 @@ Uma diretriz central desta arquitetura foi o isolamento contínuo das fontes de 
     
     \item \textbf{Camada \textit{Gold} (L2):} É na penúltima camada de processamento que ocorre a consolidação global do \textit{pipeline}. Os dados validados das diferentes origens (Fonte X e Fonte Y) convergem para formar um único documento mestre de \textit{data warehouse}. A granularidade torna-se abrangente e multiorigem. 
 \end{itemize}
-
-O fluxo é finalizado com a transição desse arquivo único da camada L2 para a Camada de Apresentação (\textit{View}), onde as regras de unicidade e a filtragem da versão mais recente do relatório garantem que as métricas entregues aos analistas sejam precisas e prontas para uso em ferramentas de \textit{Business Intelligence} (BI).
