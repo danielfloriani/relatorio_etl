@@ -19,7 +19,7 @@ Nesta arquitetura, a transição e o refinamento dos dados ocorrem na seguinte d
     
     A \textbf{L0 Original} recebe o processamento inicial e mantém os arquivos totalmente intactos. Não há nenhuma intervenção nesta subcamada; ela atua como um registro imutável do sistema, garantindo a rastreabilidade e a possibilidade de auditoria exata do que foi extraído \cite{gorelik19}. 
     
-    A \textbf{L0 Revisada} possui exatamente a mesma estrutura tabular, porém com uma finalidade distinta: ela atua como uma zona de ajuste e tolerância a falhas. Esta subcamada permite a intervenção (inclusive manual) nos dados para a limpeza de informações inúteis ou retificação de padrões de formatação não esperados oriundos dos PDFs. Essa arquitetura de manutenção paliativa evita que o código do \textit{pipeline} precise ser integralmente repensado ou reescrito a cada anomalia visual da fonte primária. É exclusivamente esta camada revisada que alimenta os processos subsequentes.
+    A \textbf{L0 Revisada} Atua como uma zona de ajuste dos dados. Caso os dados extraídos não passem nas etapas de validação das camadas subsequentes (principalmente na L1) porque a fonte não seguiu o padrão esperado, o dado é reestruturado aqui. Desta maneira, o pipeline pode ser executado novamente sem a necessidade de reprocessar o dado na camada Bronze.
     
     \item \textbf{Camada \textit{Silver} (L1):} Trata-se da camada intermediária. Nela, os dados tabulares provenientes da L0 Revisada são submetidos a rigorosos processos de limpeza, padronização, deduplicação e, principalmente, validação contra contratos predefinidos. É o estágio onde a informação deixa de ser um dado bruto e passa a ser um dado confiável e estruturado \cite{gujjala_medallion}.
     
