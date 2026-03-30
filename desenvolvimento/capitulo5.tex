@@ -1,39 +1,59 @@
 \chapter{A Implementação do \textit{Pipeline}}
 
-Este capítulo detalha a implementação técnica da solução arquitetada, traduzindo os conceitos lógicos e os fluxos de informação apresentados anteriormente em rotinas de código. O foco desta seção é expor o ambiente de desenvolvimento, a justificativa das tecnologias escolhidas e a estruturação algorítmica utilizada para transitar, validar e consolidar os dados através da Arquitetura \textit{Medallion}.
+Este capítulo detalha a implementação técnica da solução arquitetada, traduzindo os conceitos lógicos e os fluxos de informação apresentados anteriormente em rotinas de código. O foco desta seção é expor o ambiente de desenvolvimento, as diretrizes tecnológicas e a estruturação algorítmica utilizada para transitar, validar e consolidar os dados através da Arquitetura \textit{Medallion}.
 
 \section{Ambiente de Desenvolvimento e Tecnologias}
 
-Todo o desenvolvimento do \textit{pipeline} foi realizado utilizando a linguagem de programação Python, escolhida por sua vasta adoção no ecossistema de dados, flexibilidade para lidar com arquivos não estruturados e robustez na manipulação tabular. 
+Todo o desenvolvimento do \textit{pipeline} foi realizado utilizando a linguagem de programação Python. A definição do escopo tecnológico obedeceu a uma diretriz direta da equipe de desenvolvedores da Veeries, que estabeleceu o uso de bibliotecas específicas como requisito para garantir a integração e a padronização com o ecossistema de dados já existente na organização. 
 
-Para estruturar as transformações, duas bibliotecas de código aberto foram fundamentais:
+Para estruturar as transformações, o projeto foi construído sobre dois pilares de código aberto:
 \begin{itemize}
     \item \textbf{Pandas:} Biblioteca primária de manipulação e análise de dados em Python. Foi utilizada em todas as camadas do projeto para operações de união, cálculos de subtotais e limpeza de \textit{strings}.
-    \item \textbf{Pandera:} Biblioteca voltada especificamente para a validação estatística e estrutural de \textit{DataFrames} (estruturas tabulares de dados). O Pandera foi a tecnologia escolhida para materializar os "Contratos de Dados", garantindo a imposição de esquemas (\textit{schema enforcement}) durante a execução do código.
+    \item \textbf{Pandera:} Biblioteca voltada para a validação estatística e estrutural de \textit{DataFrames} (estruturas tabulares de dados). Atendendo à exigência da empresa por qualidade e governança, o Pandera foi a ferramenta empregada para materializar os "Contratos de Dados", garantindo a imposição de esquemas (\textit{schema enforcement}) durante a execução do código.
 \end{itemize}
 
-O código-fonte foi versionado utilizando a plataforma \textit{GitHub} e estruturado sob o paradigma de Programação Orientada a Objetos (POO), garantindo a modularidade e o reaproveitamento de rotinas entre diferentes fontes de dados.
+O código-fonte foi versionado utilizando a plataforma \textit{GitHub} e estruturado sob o paradigma de Programação Orientada a Objetos (POO), garantindo a modularidade e o reaproveitamento de rotinas entre diferentes origens de dados.
 
 \section{Orquestração e Ingestão (Camada \textit{Bronze})}
 
 O fluxo de execução do projeto é coordenado por \textit{scripts} orquestradores (\texttt{main\_source.py}), responsáveis por acionar os módulos sequencialmente e interromper o processo imediatamente caso ocorra uma falha crítica em qualquer camada.
 
-A primeira etapa do \textit{pipeline} é operada pelo módulo \texttt{l0\_process.py}. Este componente atua como o motor de ingestão da Camada \textit{Bronze} (L0). O seu papel principal é varrer os diretórios de entrada (\texttt{01\_RAW}), identificar novos relatórios em formato nativo (PDF ou planilhas despadronizadas) e acionar os algoritmos de extração de texto (\textit{parsers}). 
+A primeira etapa do \textit{pipeline} é operada pelo módulo \texttt{l0\_process.py}. Este componente atua como o motor de ingestão da Camada \textit{Bronze} (L0). O seu papel principal é varrer os diretórios de entrada (\texttt{01\_RAW}), identificar novos relatórios em formato nativo e acionar os algoritmos de extração de texto (\textit{parsers}). 
 
-Optou-se por abstrair a complexidade visual dos relatórios nativos logo no momento da ingestão. O \textit{parser} localiza os dados tabulares e os metadados primários (como a data de referência do relatório) e o módulo L0 salva essas informações extraídas no formato CSV, mantendo a integridade exata do que foi lido (L0 Original). O armazenamento nesta camada utiliza um particionamento lógico em arquivos ZIP (compactados) organizados por ano e mês, otimizando o consumo de espaço em nuvem e facilitando a auditoria temporal.
+Optou-se por abstrair a complexidade visual dos relatórios originais logo no momento da ingestão. O \textit{parser} localiza os dados tabulares e os metadados primários (como a data de referência do relatório) e o módulo L0 salva essas informações no formato .CSV, mantendo a integridade exata do que foi lido (L0 Original). O armazenamento nesta camada utiliza um particionamento lógico em arquivos compactados organizados por ano e mês, otimizando o espaço em nuvem e facilitando a auditoria temporal.
 
 \section{Validação e Padronização (Camada \textit{Silver})}
 
 A transição para a Camada \textit{Silver} (L1) é o ponto crítico para a governança do \textit{pipeline}, sendo executada pelo módulo \texttt{l1\_process.py}. É nesta etapa que os dados brutos deixam de ser tratados apenas como "texto" e passam a ser validados como regras de negócio.
 
-A implementação dessa validação baseia-se fortemente no arquivo \texttt{schemas.py}, onde classes de validação do \textit{Pandera} definem os contratos estruturais. Como exemplo, a classe \texttt{L1Schema} força que todas as instâncias possuam campos tipados corretamente (como datas de referência obrigatórias e colunas de identificação de origem). Caso a Fonte X altere a estrutura do seu relatório e o módulo de ingestão absorva colunas inesperadas, o processo de validação acusará uma violação de contrato e interromperá a execução, bloqueando a propagação do erro estrutural.
+A implementação dessa validação baseia-se fortemente no arquivo \texttt{schemas.py}, onde classes de validação definem os contratos estruturais. A \autoref{fig_schema} apresenta um trecho do código desenvolvido demonstrando a imposição de tipagem da camada L1.
 
-Além da tipagem, o módulo L1 realiza o mapeamento dos dados. Através da leitura de dicionários de conversão externos (arquivos do Excel gerenciados pela equipe de mercado), os nomes de produtos e variáveis que chegam despadronizados da fonte são normalizados para as nomenclaturas internas da Veeries, centralizando o controle semântico.
+\begin{figure}[htb]
+    \caption{\label{fig_schema}Trecho de Código - Implementação de Contrato de Dados com Pandera}
+    \begin{center}
+        % DICA: Tire um print do seu schemas.py (da classe L1Schema) e coloque o arquivo na pasta imagens
+        \includegraphics[scale=0.23]{imagens/schema.png} 
+    \end{center}
+    \legend{Fonte: Elaborado pelo autor.}
+\end{figure}
+
+Conforme ilustrado, o sistema força que todas as instâncias possuam campos tipados corretamente (como datas de referência obrigatórias e colunas de identificação de origem). Caso a fonte externa altere a estrutura do seu relatório, o processo de validação acusará uma violação de contrato e interromperá a execução, bloqueando a propagação do erro.
+
+Além da tipagem, o módulo L1 realiza o mapeamento semântico. Através da leitura de dicionários de conversão, os nomes de categorias e variáveis que chegam despadronizados são normalizados para as nomenclaturas internas da empresa, centralizando o controle. A \autoref{fig_funcao} demonstra a estruturação de uma das lógicas de validação aplicadas no \textit{pipeline}.
+
+\begin{figure}[htb]
+    \caption{\label{fig_funcao}Trecho de Código - Rotina Lógica de Validação e Reconciliação}
+    \begin{center}
+        % DICA: Tire um print da sua função validate_horizontal_consistency ou validate_uniqueness no functions.py
+        \includegraphics[scale=0.23]{imagens/horizontal_validation.png} 
+    \end{center}
+    \legend{Fonte: Elaborado pelo autor.}
+\end{figure}
 
 \section{Transformação Analítica e Apresentação (Camadas \textit{Gold} e \textit{View})}
 
 O refino final dos dados é dividido entre os módulos \texttt{l2\_process.py} (Camada \textit{Gold}) e \texttt{view\_monthly\_process.py} (Camada de Apresentação).
 
-Na camada L2, a rotina de código executa a principal alteração estrutural do dado: a operação de \textit{Melt} (despivoteamento). Essa técnica transforma colunas específicas (por exemplo, múltiplas colunas representando diferentes portos) em linhas, alterando a tabela para o formato longo (\textit{long format}). Esse formato é o padrão-ouro exigido por ferramentas modernas de visualização. É também nesta camada que são processadas as agregações lógicas (subtotais sintéticos de categorias de produtos) e aplicadas as validações estritas de unicidade (\textit{validate\_uniqueness}) para prevenir a multiplicação indevida de instâncias.
+Na camada L2, a rotina executa a principal alteração estrutural do dado: a operação de \textit{Melt} (despivoteamento). Essa técnica transforma variáveis dispostas horizontalmente (por exemplo, múltiplas colunas representando diferentes segmentações regionais ou categorias) em linhas. Esse formato longo (\textit{long format}) é o padrão exigido por ferramentas modernas de visualização. É também nesta camada que são processadas as agregações lógicas (subtotais sintéticos) e aplicadas as validações estritas de unicidade (\textit{validate\_uniqueness}) para prevenir a multiplicação indevida de instâncias geradas pela transformação.
 
-Por fim, o módulo \textit{View} abstrai toda a complexidade da engenharia para o usuário final. Ele atua removendo os metadados de auditoria e executa o filtro de versão cronológica (\textit{date versioning}). Caso as fontes emitam relatórios redundantes ou retificados no mesmo mês, o código utiliza a data de extração para deduplicar a base, garantindo que a versão entregue aos analistas reflita estritamente o cenário mais atual e fidedigno do mercado.
+Por fim, o módulo \textit{View} abstrai toda a complexidade da engenharia para o usuário final. Ele atua removendo os metadados de auditoria técnica e executa o filtro de versão cronológica (\textit{date versioning}). Caso as fontes emitam relatórios redundantes ou retificados no mesmo período, o código utiliza a data de extração para deduplicar a base, garantindo que a versão entregue aos analistas reflita estritamente o cenário consolidado mais atual e fidedigno do mercado.
