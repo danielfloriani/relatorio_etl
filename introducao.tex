@@ -1,45 +1,43 @@
 % 1. Definição do assunto e o problema a ser abordado no trabalho
-O presente relatório aborda a estruturação e a confiabilidade no consumo de dados corporativos. O problema central a ser resolvido consiste na fragilidade e na falta de padronização durante a ingestão de dados provenientes de fontes externas críticas para o negócio, especificamente os dados de duas fontes confidenciais, tratadas aqui como fonte X e fonte Y.
+O presente relatório de estágio aborda o desafio da estruturação e da confiabilidade no consumo de dados corporativos. O problema central a ser resolvido consiste na fragilidade, morosidade e na falta de padronização durante a ingestão manual de dados provenientes de fontes externas críticas para o negócio, especificamente os relatórios em PDF de duas fontes confidenciais, tratadas aqui como Fonte X e Fonte Y.
 
 % 2. Localização do assunto no espaço, no tempo e no contexto do Curso
-Este trabalho foi desenvolvido durante o Estágio Obrigatório realizado na empresa \textbf{Veeries}, no período de \textbf{outubro de 2025} a \textbf{abril de 2026}. O projeto insere-se no contexto do curso de Engenharia de Controle e Automação da Universidade Federal de Santa Catarina (UFSC), aplicando conhecimentos da grande área de estruturas e processamento de dados na resolução de problemas práticos.
+Este trabalho foi desenvolvido durante o Estágio Obrigatório realizado na empresa \textbf{Veeries}, no período de \textbf{outubro de 2025} a \textbf{abril de 2026}. O projeto insere-se no contexto do curso de Engenharia de Controle e Automação da Universidade Federal de Santa Catarina (UFSC), aplicando conhecimentos da grande área de informática industrial, especificamente no que tange a estruturas, processamento e automação de fluxos de dados, para a resolução de problemas práticos de mercado.
 
 % 3. Importância do assunto e justificativa da escolha
-A confiabilidade dos dados é um fator crítico para a tomada de decisão nas organizações. A ausência de um tratamento adequado pode gerar inconsistências que impactam negativamente as análises gerenciais e estratégicas. A escolha deste tema justifica-se pela oportunidade de aplicar boas práticas de engenharia de dados para mitigar esses riscos, garantindo a integridade e a qualidade das informações disponibilizadas. Cumpre destacar que, ao longo de todo o projeto, atuei de forma direta na idealização, desenvolvimento e codificação dessa arquitetura.
+A confiabilidade dos dados é um fator crítico para a tomada de decisão nas organizações. A ausência de um tratamento automatizado e adequado pode gerar inconsistências silenciosas que impactam negativamente as análises gerenciais e estratégicas da equipe de mercado. A escolha deste tema justifica-se pela oportunidade de aplicar boas práticas de engenharia de \textit{software} e de dados para mitigar esses riscos de intervenção humana, garantindo a integridade e a qualidade das informações disponibilizadas. Cumpre destacar que, ao longo de todo o projeto, atuei de forma direta e integral na idealização da arquitetura, na modelagem lógica e na codificação dos \textit{scripts} que compõem a solução final.
 
 % 4. Objeto geral e objetivos específicos
 \section{Objetivos}
-O objetivo geral deste estágio foi desenvolver e implementar um \textit{pipeline} automatizado de extração, processamento e validação de dados para as fontes X e fonte Y. Como objetivos específicos, destacam-se:
+O objetivo geral deste estágio foi desenvolver e implementar um \textit{pipeline} (uma esteira automatizada de fluxo de dados) para a extração, processamento e validação das informações provenientes das fontes X e Y. 
+
+Como objetivos específicos, destacam-se:
 \begin{itemize}
-    \item Projetar o fluxo de dados fundamentado na Arquitetura \textit{Medallion} (camadas \textit{Bronze, Silver} e \textit{Gold}).
-    \item Desenvolver rotinas de extração bruta de dados (\textit{parsers} e \textit{ingestion}) a partir de fontes externas.
-    \item Implementar rigorosas validações de qualidade e limpeza estrutural de dados utilizando \textit{schemas} definidos.
+    \item Projetar o fluxo de dados fundamentado na Arquitetura \textit{Medallion} (um modelo de organização em camadas progressivas de qualidade: \textit{Bronze, Silver} e \textit{Gold}).
+    \item Desenvolver rotinas programáticas de extração bruta de dados (\textit{parsers}) a partir de arquivos de formato complexo e não estruturado.
+    \item Implementar rigorosas validações de qualidade e limpeza estrutural utilizando \textit{schemas} (contratos técnicos que definem o formato esperado da informação).
 \end{itemize}
 
 % 5. Hipóteses levantadas ou argumentação principal
-A argumentação principal deste trabalho é que a adoção da Arquitetura \textit{Medallion}, aliada à implementação de contratos de dados estritos (validações estruturais na transição entre as camadas), é capaz de garantir um fluxo de informação resiliente, rastreável e confiável, solucionando o problema de despadronização inicial.
+A argumentação principal deste trabalho é que a adoção da Arquitetura \textit{Medallion}, aliada à implementação de contratos de dados estritos na transição entre as camadas de processamento, é capaz de garantir um fluxo de informação resiliente, rastreável e auditável, solucionando definitivamente o gargalo operacional da despadronização inicial.
 
 % 6. Descrição da metodologia empregada no trabalho
 \section{Metodologia}
-A metodologia adotada possui um caráter eminentemente prático e aplicado, 
-com foco no relato das técnicas e ferramentas utilizadas, abdicando-se portanto de um rigor teórico excessivo. 
-Trata-se de um desenvolvimento de \textit{software} em nível de produção (estudo de campo/prático). 
-Para isso, foram criados \textit{scripts} em linguagem Python (\texttt{main\_source\_X.py} e \texttt{main\_source\_Y.py}) 
-orquestrando módulos de processamento progressivos para as camadas L0, L1 e L2 (\texttt{l0\_process.py}, \texttt{l1\_process.py}, \texttt{l2\_process.py}) 
-e regras de validação (\texttt{schemas.py}), bem como \textit{scripts} de configurações de diretórios e calibração de parâmetros.
+A metodologia adotada possui um caráter eminentemente prático e aplicado, com foco no relato das técnicas e ferramentas utilizadas no desenvolvimento da automação, adequando-se ao rigor teórico esperado para um relatório de estágio técnico. Trata-se de um projeto de arquitetura de \textit{software} em nível de produção. 
+
+Para a sua consecução, foram arquitetados e codificados \textit{scripts} em linguagem Python atuando como orquestradores (\texttt{main\_source\_X.py} e \texttt{main\_source\_Y.py}). Estes orquestram módulos de processamento progressivos para transitar a informação entre as camadas do sistema (\texttt{l0\_process.py}, \texttt{l1\_process.py}, \texttt{l2\_process.py} e \texttt{view\_monthly\_process.py}), assegurados por regras de validação tipada e reconciliação matemática.
 
 % 7. Alternativas de solução do Problema (com referência bibliográfica)
-Como alternativa de solução frente aos modelos tradicionais de ETL (\textit{Extract, Transform, Load}) executados em lote único (sem etapas intermediárias de validação), 
-optou-se pela Arquitetura \textit{Medallion}. 
-Essa abordagem permite o armazenamento dos dados em estados progressivos de refinamento, facilitando a auditoria e o reprocessamento em caso de falhas \cite{gujjala_medallion}.
+Como alternativa de solução frente aos modelos tradicionais de integração de dados executados em lote único (onde extração, transformação e carregamento ocorrem sem zonas de quarentena ou auditoria intermediária), optou-se pela Arquitetura \textit{Medallion}. Essa abordagem permite o armazenamento dos arquivos em estados progressivos de refinamento em nuvem, facilitando a auditoria contínua e a manutenção paliativa pontual sem a necessidade de reprocessar todo o sistema em caso de falhas na fonte \cite{gujjala_medallion}.
 
 % 8. Apresentação do plano adotado para o desenvolvimento do assunto (capítulos)
 \section{Estrutura do Relatório}
 Para descrever o desenvolvimento e os resultados alcançados, o plano adotado para este relatório está organizado da seguinte maneira:
 \begin{itemize}
-    \item O \textbf{Capítulo 2} descreve o contexto da empresa, detalhando o ambiente de desenvolvimento e os pormenores do problema motivador do estágio.
-    \item O \textbf{Capítulo 3} apresenta, de forma concisa e prática, os aspectos conceituais da Arquitetura \textit{Medallion} e das técnicas de validação de dados utilizadas na solução.
-    \item O \textbf{Capítulo 4} detalha a implementação técnica, expondo a codificação e os fluxos de informação do \textit{pipeline} ponta a ponta (das configurações globais até o nível 2 de processamento).
-    \item O \textbf{Capítulo 5} expõe os resultados obtidos (pilotos/reais) e promove uma análise crítica profunda sobre os ganhos de confiabilidade alcançados.
-    \item Por fim, o \textbf{Capítulo 6} reúne a síntese interpretada dos resultados, os impactos organizacionais e aponta perspectivas para trabalhos futuros.
+    \item O \textbf{Capítulo 2} descreve o contexto da empresa, detalhando a divisão das equipes, os conceitos primários sobre dados e os pormenores do problema motivador do estágio.
+    \item O \textbf{Capítulo 3} apresenta, de forma concisa e prática, o embasamento bibliográfico da Arquitetura \textit{Medallion} e das técnicas de validação de dados utilizadas na solução.
+    \item O \textbf{Capítulo 4} descreve a arquitetura macro da solução, o ambiente de execução e a evolução estrutural (granularidade) dos arquivos ao longo do fluxo.
+    \item O \textbf{Capítulo 5} mergulha na implementação técnica, expondo os métodos de codificação, o \textit{parsing} de arquivos e a transição algorítmica entre as camadas do projeto.
+    \item O \textbf{Capítulo 6} expõe os resultados e promove uma análise crítica profunda sobre os ganhos reais de confiabilidade e desempenho alcançados na organização.
+    \item Por fim, o \textbf{Capítulo 7} reúne a síntese interpretada dos resultados, avalia o cumprimento dos objetivos traçados e aponta perspectivas para trabalhos futuros.
 \end{itemize}
