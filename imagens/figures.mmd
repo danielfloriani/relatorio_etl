@@ -1,0 +1,63 @@
+
+flowchart TD
+RAW[(&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;<i>RAW&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;)]
+L0_r[(L0 revisada)]
+L0_o[(L0 original)]
+L1[(&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp)]
+L1_other[(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbspL1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp)]
+L2[(&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;L2&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;)]
+view[(<i>&nbsp&nbsp;View&nbsp;&nbsp;)]
+L0p[processamento L0]
+L1p[processamento L1]
+L2p[processamento L2]
+V_p[processamento <i>View]
+Log[fa:fa-file-text <i>pipeline.log]
+Alerta[fa:fa-exclamation-triangle Interrupção <i>Fail-Fast]
+    RAW --> L0p
+    L0p --> L0_r
+    L0p --> L0_o
+    L0_r --> L1p
+    L1p --> |erro de validação| Alerta
+    L1p --> |sucesso nas validações| L1
+    L1 --> |fonte associada ao gatilho| L2p
+    L1_other -->|outra fonte| L2p
+    L2p --> L2
+    L2 --> V_p
+    V_p --> |com duplicidade nos dados| Alerta
+    V_p --> |sem duplicidade nos dados| view
+    Alerta --> Log
+
+style L1 fill:#c0c0c0
+style L1_other fill:#c0c0c0
+style L2 fill:#ffd700
+style L0_r fill:#cd7f32
+style L0_o fill:#cd7f32
+style view fill:#FFEDB7
+style RAW fill:#b99b8c
+style Log fill:#ffffff,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
+style Alerta fill:#ffcccc,stroke:#cc0000,stroke-width:2px,color:#cc0000
+
+
+
+flowchart TD
+RAW_X[(<i>Raw</i> fonte X)]
+RAW_Y[(<i>Raw</i> fonte Y)]
+L0_X[(L0 fonte X)]
+L0_Y[(L0 fonte Y)]
+L1_X[(L1 fonte X)]
+L1_Y[(L1 fonte Y)]
+L2[(L2 consolidado)]
+view[(<i>&nbsp&nbsp;&nbsp;View&nbsp;&nbsp;&nbsp;)]
+
+RAW_X --> L0_X --> L1_X --> L2
+RAW_Y --> L0_Y --> L1_Y --> L2 --> view
+
+
+style L1_X fill:#c0c0c0
+style L1_Y fill:#c0c0c0
+style L2 fill:#ffd700
+style L0_X fill:#cd7f32
+style L0_Y fill:#cd7f32
+style view fill:#FFEDB7
+style RAW_X fill:#b99b8c
+style RAW_Y fill:#b99b8c
