@@ -1,8 +1,23 @@
-\chapter{Capítulo 6}
+\chapter{Resultados e Discussões}
 
-Análise  dos  resultados:  análise  crítica  e  profunda  sobre  o  que fizeram,  os  resultados atingidos,  os  prós  e  contras,  impactos  da sua  utilização  na  empresa,  como  "provam"  que  isso resolveu  (ou  melhorou)  o  problema  inicialmente  identificado,  os  indicadores usados  para avaliação (e o porquê deles e não outros), os ganhos quanti ou qualitativos obtidos, etc..
+Este capítulo apresenta a análise crítica dos resultados obtidos com a implantação do \textit{pipeline} em ambiente de produção. O objetivo é avaliar a eficácia da solução proposta frente aos problemas de despadronização e morosidade detalhados no Capítulo 2, dimensionando os impactos quantitativos de desempenho e os ganhos qualitativos de governança de dados para a Veeries.
 
+\section{Impacto Operacional e Redução de Tempo de Processamento}
 
-Onde se apresentam e são discutidos os resultados (simulados, piloto ou reais) obtidos no decorrer da pesquisa/desenvolvimento. 
-Nesta discussão é importante dar meios para que o leitor entenda os resultados obtidos e como foram obtidos.
-Deve-se fazer uma análise dos resultados: análise crítica profunda sobre o que foi feito, os resultados atingidos, os prós e contras, impactos, como isso resolveu o problema, os ganhos obtidos, etc.
+O benefício imediato e mais expressivo da automatização foi o ganho de eficiência temporal. No paradigma anterior, a equipe de mercado consumia cerca de uma hora de trabalho humano inteiramente dedicada à leitura e transcrição manual de um único relatório em PDF. Com a nova arquitetura, o tempo de extração, validação, cruzamento e consolidação dos dados despencou para um intervalo de execução entre \textbf{2 a 5 segundos}.
+
+Embora o monitoramento inicial da disponibilidade do dado permaneça uma etapa humana (uma vez que a fonte emissora não possui uma data previsível para a publicação dos relatórios), a natureza do trabalho do responsável pelos dados foi fundamentalmente transformada. A equipe deixou de atuar como "transcritora de dados" e assumiu o papel de curadoria e auditoria da informação. O esforço humano agora é alocado exclusivamente para interpretar o resultado do \textit{pipeline} e analisar os dados já consolidados.
+
+\section{Governança, Resiliência e Tratamento de Exceções}
+
+Sob a perspectiva qualitativa, a adoção da Arquitetura \textit{Medallion} e da estratégia \textit{fail-fast} (falhar rapidamente) provou-se altamente eficaz na proteção do ambiente analítico da empresa. Durante os ciclos de operação real, o sistema de monitoramento conseguiu identificar e barrar a propagação de anomalias que, no método manual, passariam despercebidas.
+
+Com o novo fluxo, quando o \textit{pipeline} reporta uma interrupção de sucesso, o trabalho do manutentor responsável restringe-se a investigar a causa apontada pelos \textit{logs} e atuar em três frentes principais de exceção:
+
+\begin{itemize}
+    \item \textbf{Produtos não mapeados:} Como os relatórios externos frequentemente introduzem categorias de produtos voláteis ou nomenclaturas inéditas, a validação de dicionário da camada \textit{Silver} (L1) barra o processamento instantaneamente. O manutentor então apenas adiciona a nova instância ao dicionário central de mapeamento e reexecuta o código.
+    \item \textbf{Inconsistências de estrutura nativa:} Quando a fonte altera a forma que altera os dados, o manutentor realiza ajustes pontuais na camada L0 Revisada. Isso valida a premissa arquitetural discutida no Capítulo 3: é possível corrigir o formato de leitura sem perder a rastreabilidade original do documento preservado na L0 Original.
+    \item \textbf{Auditoria de séries históricas e erros da fonte:} O impacto mais notável de qualidade de dados ocorreu durante a consolidação histórica das bases. As validações matemáticas identificaram o aparecimento de uma categoria de produto que não possuía sentido lógico na série temporal. A restrição estrutural revelou que a falha não era do algoritmo de extração, mas sim um \textbf{erro de publicação da própria fonte externa emissora do relatório}. 
+\end{itemize}
+
+O bloqueio automático desse erro de publicação externa comprova o sucesso primário deste projeto. A implementação não apenas resolveu o problema de lentidão, mas instituiu uma malha fina de confiabilidade sistêmica. A Veeries agora possui a garantia de que os relatórios que abastecem suas ferramentas de tomada de decisão (BI) são estritamente fidedignos e auditáveis, eliminando o risco do consumo de dados corrompidos.
