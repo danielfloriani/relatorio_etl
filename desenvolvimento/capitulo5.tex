@@ -60,7 +60,7 @@ Por fim, o módulo \textit{View} abstrai toda a complexidade da engenharia para 
 
 \section{Monitoramento e Rastreabilidade}
 
-Para garantir a confiabilidade da operação contínua do \textit{pipeline} em ambiente de produção, foi implementada uma arquitetura de monitoramento baseada em \textit{logs} (registros detalhados de execução). 
+Conforme ilustrado anteriormente pelas ramificações de interrupção na \autoref{fig_fluxo}, para garantir a confiabilidade da operação contínua do \textit{pipeline} em ambiente de produção, o sistema não permite o avanço de dados corrompidos. Para auditar esses bloqueios, foi implementada uma arquitetura de monitoramento baseada em \textit{logs} (registros detalhados de execução). 
 
 Através da parametrização no módulo de configuração (\texttt{config.py}), o sistema inicializa um \textit{logger} global padronizado, emitindo alertas simultâneos para o terminal de controle e para um arquivo físico de auditoria armazenado em nuvem junto aos dados brutos. 
 
