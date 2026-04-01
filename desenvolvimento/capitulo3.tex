@@ -15,7 +15,7 @@ Para organizar o \textit{pipeline} de maneira escalável, de fácil manutenção
 Nesta arquitetura, a transição e o refinamento dos dados ocorrem na seguinte divisão:
 
 \begin{itemize}
-    \item \textbf{Camada \textit{Bronze} (L0):} Consiste na camada inicial de armazenamento após a extração dos dados originais. Neste projeto, os arquivos provenientes da camada anterior (arquivos PDF) são processados para um formato tabular e, para lidar com a imprevisibilidade dessas fontes, a camada \textit{Bronze} foi estrategicamente fragmentada em duas subzonas de mesma estrutura: a \textbf{L0 Original} e a \textbf{L0 Revisada}. 
+    \item \textbf{Camada \textit{Bronze} (L0):} Consiste na camada inicial de armazenamento após a extração dos dados originais. Neste projeto, os arquivos provenientes da camada anterior (arquivos PDF) são processados para um formato tabular e, para lidar com a imprevisibilidade dessas fontes, a camada \textit{Bronze} foi estrategicamente fragmentada em duas subzonas de mesma estrutura: a L0 Original e a L0 Revisada. 
     
     A \textbf{L0 Original} recebe o processamento inicial e mantém os arquivos totalmente intactos. Não há nenhuma intervenção nesta subcamada; ela atua como um registro imutável do sistema, garantindo a rastreabilidade e a possibilidade de auditoria exata do que foi extraído \cite{gorelik19}. 
     
