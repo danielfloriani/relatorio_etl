@@ -12,11 +12,11 @@ Embora o monitoramento inicial da disponibilidade do dado permaneça uma etapa h
 
 Sob a perspectiva qualitativa, a adoção da Arquitetura \textit{Medallion} e da estratégia \textit{fail-fast} (falhar rapidamente) provou-se altamente eficaz na proteção do ambiente analítico da empresa. Durante os ciclos de operação real, o sistema de monitoramento conseguiu identificar e barrar a propagação de anomalias que, no método manual, passariam despercebidas.
 
-Com o novo fluxo, quando o \textit{pipeline} reporta uma interrupção de sucesso, o trabalho do manutentor responsável restringe-se a investigar a causa apontada pelos \textit{logs} e atuar em três frentes principais de exceção:
+Com o novo fluxo, quando o \textit{pipeline} reporta uma interrupção de sucesso, o trabalho do desenvolvedor responsável restringe-se a investigar a causa apontada pelos \textit{logs} e atuar em três frentes principais de exceção:
 
 \begin{itemize}
-    \item \textbf{Produtos não mapeados:} Como os relatórios externos frequentemente introduzem categorias de produtos voláteis ou nomenclaturas inéditas, a validação de dicionário da camada \textit{Silver} (L1) barra o processamento instantaneamente. O manutentor então apenas adiciona a nova instância ao dicionário central de mapeamento e reexecuta o código.
-    \item \textbf{Inconsistências de estrutura nativa:} Quando a fonte altera ligeiramente a forma que publica os dados, o manutentor realiza ajustes pontuais na camada L0 Revisada. Isso valida a premissa arquitetural discutida no Capítulo 3: é possível corrigir o formato de leitura sem perder a rastreabilidade original do documento preservado na L0 Original.
+    \item \textbf{Produtos não mapeados:} Como os relatórios externos frequentemente introduzem categorias de produtos voláteis ou nomenclaturas inéditas, a validação de dicionário da camada \textit{Silver} (L1) barra o processamento instantaneamente. O desenvolvedor então apenas adiciona a nova instância ao dicionário central de mapeamento e reexecuta o código.
+    \item \textbf{Inconsistências de estrutura nativa:} Quando a fonte altera ligeiramente a forma que publica os dados, o desenvolvedor realiza ajustes pontuais na camada L0 Revisada. Isso valida a premissa arquitetural discutida no Capítulo 3: é possível corrigir o formato de leitura sem perder a rastreabilidade original do documento preservado na L0 Original.
     \item \textbf{Auditoria de séries históricas e erros da fonte:} O impacto mais notável de qualidade de dados ocorreu durante a consolidação histórica das bases. As validações matemáticas identificaram o aparecimento de uma categoria de produto que não possuía sentido lógico na série temporal. A restrição estrutural revelou que a falha não era do algoritmo de extração, mas sim um \textbf{erro de publicação da própria fonte externa emissora do relatório}. 
 \end{itemize}
 
