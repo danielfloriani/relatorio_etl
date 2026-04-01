@@ -1,14 +1,27 @@
-\chapter{Capítulo 7}
+\chapter{Considerações Finais e Perspectivas}
 
-Conclusões gerais: "resumão" do que foi feito e dos resultados globais, limitações do que foi desenvolvido e pressupostos assumidos, e sugestão para trabalhos futuros de continuação.
+Este capítulo apresenta a síntese interpretada dos resultados alcançados ao longo do estágio, avaliando o cumprimento dos objetivos propostos. Discutem-se também as limitações inerentes à solução desenvolvida e são traçadas perspectivas para trabalhos futuros.
 
-Síntese pessoal, objetiva, sucinta e interpretada dos resultados do trabalho.
-Grosso modo, deve-se apresentar um resumo do que foi feito, dos resultados globais (frente aos objetivos inicialmente traçados). Exemplos:
+\section{Síntese e Avaliação dos Resultados}
+
+O desenvolvimento deste \textit{pipeline} de extração e validação atingiu plenamente o objetivo de solucionar o gargalo operacional da Veeries. A substituição de um processo manual rudimentar, que consumia cerca de 3 horas de trabalho humano por lote de relatórios, por uma execução automatizada de até 5 segundos representa um ganho de eficiência evidente.
+
+Do ponto de vista da governança, a adoção da Arquitetura \textit{Medallion} e a aplicação rigorosa de Contratos de Dados mostraram-se escolhas arquiteturais acertivas. O método implementado foi significativamente superior à abordagem anterior, não apenas pela velocidade de ingestão, mas pela capacidade de trazer robustez ao repositório de informações. O sistema transferiu a responsabilidade da equipe de uma atuação repetitiva e transcritora para um papel analítico e de curadoria de negócio. O bloqueio automático e bem-sucedido de anomalias e erros gerados pela própria fonte emissora atesta que o código desenvolvido entregou o nível máximo de confiabilidade exigido para a tomada de decisão da empresa.
+
+\section{Limitações do Projeto}
+
+Apesar do sucesso operacional, a solução atual opera sob alguns pressupostos lógicos e possui limitações que devem ser pontuadas:
 
 \begin{itemize}
-\item o método deu certo? funcionou? deu o resultado esperado? Foi melhor que o método anterior?
-\item impactos organizacionais, tecnológicos, financeiros, éticos, ecológicos, etc., tidos (ou potencialmente a ter) com a introdução do que foi proposto.
+    \item \textbf{Dependência de Gatilho Humano:} Devido à imprevisibilidade na data e horário de publicação dos relatórios pelas fontes externas, o \textit{pipeline} ainda depende que o usuário (manutentor) identifique visualmente a disponibilidade do arquivo (via portal ou e-mail) e acione o processamento através do \textit{bot} no aplicativo \textit{Telegram}.
+    \item \textbf{Suscetibilidade a Mudanças Estruturais Severas:} O algoritmo de extração de texto (\textit{parser}) foi desenhado para tolerar pequenas flutuações de margens e espaçamentos da fonte nativa. Contudo, se a entidade externa alterar drasticamente a disposição visual das tabelas no PDF, o sistema falhará intencionalmente (\textit{fail-fast}) para proteger a integridade dos dados, exigindo a intervenção nos métodos de captura dos dados nos arquivos brutos.
 \end{itemize}
 
+\section{Perspectivas e Trabalhos Futuros}
 
-De forma complementar, se pertinente, sugestões para trabalhos futuros de continuação.
+Uma vez que a estrutura algorítmica foi concebida sob o paradigma de Programação Orientada a Objetos e os módulos encontram-se rigorosamente desacoplados, a arquitetura oferece um vasto campo para evoluções. Como sugestões lógicas para a continuidade deste trabalho, destacam-se:
+
+\begin{itemize}
+    \item \textbf{Automação da Captura:} O desenvolvimento e integração de um módulo de RPA (\textit{Robotic Process Automation} - Automação Robótica de Processos) ou \textit{Web Scraping} (técnica de extração de dados da web) para monitorar continuamente as caixas de e-mail ou os portais das fontes. Essa evolução eliminaria o monitoramento humano, tornando todo o fluxo da informação 100\% autônomo.
+    \item \textbf{Expansão Horizontal do Modelo:} Aproveitar as classes abstratas e as funções de padronização universal já codificadas (como as validações cruzadas e os \textit{schemas} de L1 e L2) para englobar dezenas de outras fontes nativas recebidas pela Veeries, padronizando progressivamente a ingestão de toda a organização sob o modelo \textit{Medallion}.
+\end{itemize}
