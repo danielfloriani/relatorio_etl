@@ -64,6 +64,16 @@ Conforme ilustrado anteriormente pelas ramificações de interrupção na \autor
 
 Através da parametrização no módulo de configuração (\texttt{config.py}), o sistema inicializa um \textit{logger} global padronizado, emitindo alertas simultâneos para o terminal de controle e para um arquivo físico de auditoria armazenado em nuvem junto aos dados brutos. 
 
-Durante a orquestração executada pelos \textit{scripts} principais (\texttt{main\_source.py}), as rotinas de processamento adotam a estratégia de propagação de erros em cascata (\textit{cascading error propagation}). Isso significa que a execução das camadas é estritamente interdependente. Se o módulo da camada \textit{Silver} identificar uma quebra no contrato de dados (uma coluna nova não mapeada enviada pela fonte, por exemplo), o erro estrutural é registrado no \textit{log} e o \textit{pipeline} é interrompido imediatamente.
+Durante a orquestração executada pelos \textit{scripts} principais (\texttt{main\_source.py}), as rotinas de processamento adotam a estratégia de propagação de erros em cascata (\textit{cascading error propagation}). A \autoref{fig_orquestrador} ilustra como o encadeamento sequencial das camadas foi implementado dentro de um bloco de controle de exceções.
+
+\begin{figure}[htb]
+    \caption{\label{fig_orquestrador}Trecho de Código - Orquestração e Propagação de Erros em Cascata}
+    \begin{center}
+        \includegraphics[scale=0.23]{imagens/orquestrador_principal.png}
+    \end{center}
+    \legend{Fonte: Elaborado pelo autor.}
+\end{figure}
+
+Isso significa que a execução das camadas é estritamente interdependente. Se o módulo da camada \textit{Silver} identificar uma quebra no contrato de dados (uma coluna nova não mapeada enviada pela fonte, por exemplo), o erro estrutural é capturado, registrado no \textit{log} detalhado, e o \textit{pipeline} é interrompido imediatamente. 
 
 A adoção dessa abordagem \textit{fail-fast} (falhar rapidamente) é a etapa final de segurança arquitetural do projeto. Ela impede que um dado corrompido, não mapeado ou parcialmente validado avance e contamine as camadas \textit{Gold} e de Apresentação. Dessa forma, assegura-se que a equipe de analistas de mercado consuma única e exclusivamente informações validadas, auditáveis e fidedignas, cumprindo o objetivo primário de qualidade de dados proposto no estágio.
