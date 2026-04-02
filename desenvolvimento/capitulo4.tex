@@ -10,20 +10,19 @@ Como as fontes externas não possuem uma data de publicação exata ou previsív
 
 O fluxo se inicia quando o desenvolvedor responsável pelo monitoramento recebe o documento da fonte (via e-mail ou portais do mercado). O arquivo é então salvo de maneira padronizada no diretório de entrada inicial do \textit{pipeline} (denominado \texttt{01\_RAW}). Após o armazenamento, o usuário aciona a execução do processamento através de um \textit{bot} (robô virtual de automação) no aplicativo de mensagens \textit{Telegram}, o qual atua como o gatilho externo. Este \textit{bot} envia um comando (via \textit{webhook}, um mecanismo de comunicação em tempo real, ou requisição de API - interface de comunicação entre sistemas) que inicia a rotina de execução do repositório no \textit{GitHub} (plataforma em nuvem de hospedagem e versionamento de código-fonte), transferindo o processamento pesado para o ambiente em nuvem da aplicação.
 
-A \autoref{fig_arquitetura} ilustra o diagrama esquemático deste fluxo lógico, desde a captura dos dados crus até a sua disponibilização para os usuários analistas de mercado.
+\section{Fluxo e Evolução Estrutural dos Arquivos}
+
+A \autoref{fig_arquitetura} apresenta o diagrama da Arquitetura \textit{Medallion} implementada, ilustrando a transição dos dados desde a sua captura bruta até a disponibilização para os analistas de mercado. Uma diretriz central desta arquitetura foi o isolamento contínuo das fontes de dados durante as etapas primárias de limpeza e validação, a fim de evitar que anomalias em um relatório comprometessem a ingestão do outro.
 
 \begin{figure}[htb]
     \caption{\label{fig_arquitetura}Diagrama de Arquitetura do \textit{Pipeline Medallion}}
     \begin{center}
-        % DICA: Substitua 'Example.png' pelo nome exato do seu arquivo de imagem na pasta 'imagens'
         \includegraphics[scale=0.3]{imagens/arquitetura.png}
     \end{center}
     \legend{Fonte: Elaborado pelo autor.}
 \end{figure}
 
-\section{Fluxo e Evolução Estrutural dos Arquivos}
-
-Uma diretriz central desta arquitetura foi o isolamento contínuo das fontes de dados durante as etapas de limpeza e validação, a fim de evitar que anomalias em um relatório comprometessem a ingestão do outro. A \autoref{fig_fluxo} detalha visualmente as etapas de processamento e a evolução estrutural dos arquivos dentro do \textit{pipeline}.
+Para operacionalizar esse fluxo lógico, a \autoref{fig_fluxo} detalha visualmente as etapas de processamento executadas pelos algoritmos orquestradores da esteira.
 
 \begin{figure}[htb]
     \caption{\label{fig_fluxo}Fluxo de Processamento de \texttt{main\_source\_X.py} ou \texttt{main\_source\_Y.py}}
@@ -33,7 +32,7 @@ Uma diretriz central desta arquitetura foi o isolamento contínuo das fontes de 
     \legend{Fonte: Elaborado pelo autor.}
 \end{figure}
 
-A transição e consolidação da informação ocorrem de maneira gradativa através das camadas:
+A transição e consolidação da informação ocorrem de maneira gradativa através das camadas detalhadas a seguir:
 
 \begin{itemize}
     \item \textbf{Camada \textit{Raw} (Crua):} Os arquivos que ingressam nesta camada preservam seu formato nativo (PDF). A granularidade é estritamente unitária: cada arquivo corresponde a um documento em PDF de uma única fonte de informação, retratando uma única data de emissão e um mês de referência específico. Os arquivos são mantidos em diretórios separados por fonte.
