@@ -39,7 +39,7 @@ A implementação dessa validação baseia-se fortemente no arquivo \texttt{sche
 
 Conforme ilustrado, o sistema força que todas as instâncias possuam campos tipados corretamente (como datas de referência obrigatórias e colunas de identificação de origem). Caso a fonte externa altere a estrutura do seu relatório, o processo de validação acusará uma violação de contrato e interromperá a execução, bloqueando a propagação do erro.
 
-Além da tipagem, o módulo L1 realiza o mapeamento semântico. Através da leitura de dicionários de conversão, os nomes de categorias e variáveis que chegam despadronizados são normalizados para as nomenclaturas internas da empresa, centralizando o controle. A \autoref{fig_funcao} demonstra a estruturação de uma das lógicas de validação aplicadas no \textit{pipeline}.
+Além da tipagem, o módulo \texttt{l1\_process.py} realiza o mapeamento semântico. Através da leitura de dicionários de conversão, os nomes de categorias e variáveis que chegam despadronizados são normalizados para as nomenclaturas internas da empresa, centralizando o controle. A \autoref{fig_funcao} demonstra a estruturação de uma das lógicas de validação aplicadas no \textit{pipeline}, a validação horizontal.
 
 \begin{figure}[htb]
     \caption{\label{fig_funcao}Trecho de Código - Rotina Lógica de Validação e Reconciliação}
