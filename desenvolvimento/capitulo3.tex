@@ -2,21 +2,15 @@
 
 Para solucionar o problema da extração manual e garantir a confiabilidade dos dados ingeridos pela Veeries, fez-se necessário o uso de padrões arquiteturais consolidados na área de engenharia de dados. Este capítulo apresenta a fundamentação teórica sobre a classificação estrutural de dados, os conceitos primários de integração, a Arquitetura \textit{Medallion} e a utilização de Contratos de Dados.
 
-\section{Estrutura de Dados e o Processo ETL}
+\section{Estruturas de Dados e \textit{Pipelines} ETL}
 
-O processo fundamental para a integração de bases de dados é conhecido como ETL (\textit{Extract, Transform, Load} — Extração, Transformação e Carregamento). Ele engloba rotinas de coleta de múltiplas fontes, limpeza, validação e carregamento, consolidando dados brutos em repositórios confiáveis para a tomada de decisão \cite{gujjala_medallion}.
+O processo fundamental para a integração de bases de dados é conhecido como ETL (\textit{Extract, Transform, Load} — Extração, Transformação e Carregamento). Em arquiteturas modernas, essas rotinas são implementadas através de \textit{pipelines} de dados — conjuntos automatizados de processos que coletam informações de múltiplas fontes, realizam a limpeza e a validação, e as carregam em repositórios confiáveis para a tomada de decisão \cite{gujjala_medallion, polisetty23}. Em oposição aos processos manuais, a adoção desses fluxos contínuos mitiga drasticamente a ocorrência de falhas humanas \cite{reis22}.
 
-A complexidade da etapa de extração em um fluxo ETL é diretamente proporcional ao nível de organização nativa da fonte de informação. Na engenharia de dados, as informações são comumente classificadas em três grandes grupos: estruturadas, semiestruturadas e não estruturadas \cite{gujjala_medallion}.
+A complexidade da etapa de extração em um \textit{pipeline} ETL é diretamente proporcional ao nível de organização nativa da fonte. Na engenharia de dados, as informações são comumente classificadas em três grandes grupos: estruturadas, semiestruturadas e não estruturadas \cite{gujjala_medallion}.
 
-Dados estruturados (como bancos de dados relacionais e planilhas Excel) exigem o menor esforço de processamento, pois sua estrutura já se encontra disposta em linhas e colunas prontas para o consumo. Dados semiestruturados não se encaixam em tabelas estritas, mas possuem marcadores lógicos e metadados bem definidos (como arquivos JSON, XML e \textit{logs} de sistemas). Por fim, os dados não estruturados não possuem formatação pré-definida de leitura computacional (como documentos de texto livre, imagens, vídeos e a grande maioria dos PDFs) e, por isso, exigem o maior esforço algorítmico no processamento primário \cite{gujjala_medallion}.
+Dados estruturados (como bancos de dados relacionais) exigem o menor esforço de processamento, pois já se encontram dispostos em linhas e colunas prontas para o consumo. Dados semiestruturados não se encaixam em tabelas estritas, mas possuem marcadores lógicos bem definidos (como arquivos JSON). Por fim, os dados não estruturados não possuem uma organização tabular ou relacional pré-definida para a extração computacional (como a grande maioria dos PDFs). Embora esses arquivos possuam uma formatação visual clara para a leitura humana, eles carecem de marcações lógicas que delimitem as variáveis, o que exige o maior esforço algorítmico no processamento primário \cite{gujjala_medallion}.
 
-O presente projeto lida majoritariamente com o desafio de transitar informações do formato não estruturado (tabelas desenhadas dentro de arquivos de texto PDF) para o formato tabular estruturado necessário às ferramentas da organização.
-
-\section{Pipelines e Qualidade de Dados}
-
-Um \textit{pipeline} de dados consiste em um conjunto automatizado de processos que realiza a extração, o processamento, a validação e o carregamento de informações de um sistema de origem para um ambiente de destino \cite{polisetty23}. Em oposição aos processos manuais e rudimentares, a adoção de fluxos automatizados garante a continuidade da informação e mitiga drasticamente a ocorrência de falhas humanas \cite{reis22}.
-
-A qualidade dos dados (\textit{Data Quality}) é o objetivo central dessas rotinas estruturadas, sendo uma medida avaliada com base em fatores como precisão, completude, consistência e confiabilidade \cite{polisetty23}. No contexto do processamento de dados não estruturados e semi-estruturados — como a leitura e extração de tabelas em arquivos PDF —, a automação do fluxo é o primeiro passo obrigatório para estabelecer a confiabilidade do que será entregue à equipe de analistas.
+A qualidade dos dados (\textit{Data Quality}) é o objetivo central dessas rotinas estruturadas, sendo avaliada com base em fatores como precisão, completude e consistência \cite{polisetty23}. Como o presente projeto lida majoritariamente com o desafio de transitar informações do formato não estruturado (tabelas desenhadas dentro de PDFs) para o formato tabular estruturado, a automação do fluxo através de um \textit{pipeline} é o primeiro passo obrigatório para estabelecer a confiabilidade do que será entregue aos analistas de mercado.
 
 \section{Arquitetura \textit{Medallion} e Fragmentação de Ingestão}
 
@@ -58,11 +52,13 @@ Para assegurar a integridade da informação propagada pelo \textit{pipeline}, n
 
 Na transição dos dados brutos (L0) para a camada intermediária estruturada (L1), aplicam-se duas validações matemáticas principais:
 \begin{itemize}
-    \item \textbf{Validação Vertical:} Atua no nível das colunas. O seu objetivo é garantir que a soma de todos os valores de uma determinada métrica extraída corresponda exatamente ao valor totalizador geral divulgado pela própria fonte em uma linha de totalização de todas colunas de interesse.
+    \item \textbf{Validação Vertical:} Atua no nível das colunas. O seu objetivo é garantir que a soma de todos os valores de uma determinada métrica extraída corresponda exatamente ao valor totalizador geral divulgado pela própria fonte em uma linha de totalização.
     \item \textbf{Validação Horizontal:} Opera no nível da instância (linha). Esta verificação assegura que, para um dado registro específico, a soma das variáveis parciais que o compõem resulte no valor idêntico à coluna de total correspondente àquela mesma linha.
 \end{itemize}
 
-Como os dados primários são originados de processos de \textit{parsing} de arquivos PDF, anomalias de formatação ou problemas de arredondamento da própria fonte emissora podem ocorrer. Por esta razão, tanto a validação vertical quanto a horizontal são projetadas com margens de tolerâncias matemáticas específicas e ajustáveis. Isso garante que o \textit{pipeline} seja resiliente a flutuações decimais irrelevantes, mantendo a continuidade do processamento sem abrir mão da confiabilidade estrutural.
+A necessidade estrita dessas abordagens de reconciliação matemática surge da criticidade inerente aos processos de extração (\textit{parsing}) de arquivos não estruturados. Durante a varredura automatizada de relatórios em PDF, formatações visuais imprevistas podem levar ao truncamento de dados ou ao tratamento inadequado de caracteres delimitadores. Se a fonte externa alterar subitamente o padrão de separadores de milhar ou decimal (como a inversão de pontos por vírgulas), as validações de esquema que atuam apenas na checagem da tipagem do dado interpretariam o valor como válido, permitindo a passagem de uma inconsistência numérica silenciosa. 
+
+Nesse cenário, a validação horizontal e vertical atua como uma malha fina estatística que detecta essas anomalias de formatação e arredondamento, garantindo que o valor extraído da matriz faça sentido em relação aos seus totais antes de ser propagado para as ferramentas de tomada de decisão \cite{polisetty23}. Por lidarem com possíveis variações de arredondamento da própria fonte, essas validações são projetadas com margens de tolerância ajustáveis. Isso garante que o \textit{pipeline} seja resiliente a flutuações decimais irrelevantes, mantendo a continuidade do processamento sem abrir mão da confiabilidade estrutural.
 
 Por fim, a \textbf{validação de unicidade} (\textit{uniqueness validation}) é uma etapa crucial para garantir que não existam registros estritamente duplicados trafegando pelo \textit{pipeline}. Diferente de lógicas de filtragem temporal ou de versão de documentos, a validação de unicidade assegura que uma mesma instância — definida por um conjunto específico de chaves compostas (\textit{composite keys}) — apareça apenas uma vez no modelo. 
 
