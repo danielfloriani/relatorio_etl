@@ -1,6 +1,16 @@
-\chapter{Aspectos Conceituais} 
+\chapter{Aspectos Conceituais}
 
-Para solucionar o problema da extração manual e garantir a confiabilidade dos dados ingeridos pela Veeries, fez-se necessário o uso de padrões arquiteturais consolidados na área de engenharia de dados. Este capítulo apresenta, de forma prática, os conceitos de \textit{pipelines} de dados, a Arquitetura \textit{Medallion} e a utilização de \textit{schemas} como contratos de dados, fundamentando as escolhas técnicas implementadas na solução.
+Para solucionar o problema da extração manual e garantir a confiabilidade dos dados ingeridos pela Veeries, fez-se necessário o uso de padrões arquiteturais consolidados na área de engenharia de dados. Este capítulo apresenta a fundamentação teórica sobre a classificação estrutural de dados, os conceitos primários de integração, a Arquitetura \textit{Medallion} e a utilização de Contratos de Dados.
+
+\section{Estrutura de Dados e o Processo ETL}
+
+O processo fundamental para a integração de bases de dados é conhecido como ETL (\textit{Extract, Transform, Load} — Extração, Transformação e Carregamento). Ele engloba rotinas de coleta de múltiplas fontes, limpeza, validação e carregamento, consolidando dados brutos em repositórios confiáveis para a tomada de decisão \cite{gujjala_medallion}.
+
+A complexidade da etapa de extração em um fluxo ETL é diretamente proporcional ao nível de organização nativa da fonte de informação. Na engenharia de dados, as informações são comumente classificadas em três grandes grupos: estruturadas, semiestruturadas e não estruturadas \cite{gujjala_medallion}.
+
+Dados estruturados (como bancos de dados relacionais e planilhas Excel) exigem o menor esforço de processamento, pois sua estrutura já se encontra disposta em linhas e colunas prontas para o consumo. Dados semiestruturados não se encaixam em tabelas estritas, mas possuem marcadores lógicos e metadados bem definidos (como arquivos JSON, XML e \textit{logs} de sistemas). Por fim, os dados não estruturados não possuem formatação pré-definida de leitura computacional (como documentos de texto livre, imagens, vídeos e a grande maioria dos PDFs) e, por isso, exigem o maior esforço algorítmico no processamento primário \cite{gujjala_medallion}.
+
+O presente projeto lida majoritariamente com o desafio de transitar informações do formato não estruturado (tabelas desenhadas dentro de arquivos de texto PDF) para o formato tabular estruturado necessário às ferramentas da organização.
 
 \section{Pipelines e Qualidade de Dados}
 
