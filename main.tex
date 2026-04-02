@@ -278,6 +278,8 @@
 % ---
 % inserir o sumario
 % ---
+\settocdepth{chapter}
+\setcounter{tocdepth}{0} % Força a profundidade aqui
 \pdfbookmark[0]{\contentsname}{toc}
 \tableofcontents*
 \cleardoublepage
@@ -294,7 +296,6 @@
 % Introdução (exemplo de capítulo sem numeração, mas presente no Sumário)
 % ----------------------------------------------------------
 \chapter[Introdução]{Introdução}
-\addcontentsline{toc}{chapter}{Introdução}
 % ----------------------------------------------------------
 
 \input{introducao.tex}
