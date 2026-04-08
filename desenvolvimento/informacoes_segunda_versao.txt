@@ -1,9 +1,9 @@
-sobe o número de arquivos processados
+sobre o número de arquivos processados
 para a fonte X
-	período do histórico: março de 2023 a janeiro de 2026
+	período do histórico: janeiro de 2023 a janeiro de 2026
 	consolidação do histórico:
 	são 144 arquivos por ano completo, 78 da categoria mensal e 66 da categoria acumulado
-	o grande volume se dá por que a fonte, a cada mês que passa, repete a publicação dos relatórios anteriores do mesmo ano. então, para o mês de maio de 2024 por exemplo, serão recebidos 25 arquivos, 15 mensal e 10 acumulado.
+	o grande volume se dá por que a fonte, a cada mês que passa, repete a publicação dos relatórios anteriores do mesmo ano. então, para o mês de maio de 2024 por exemplo, serão recebidos 9 arquivos, 5 mensal e 4 acumulado.
 para a fonte Y
 	um arquivo da categoria mensal por mês de junho de 2023 a fevereiro de 2026, com excessão de alguns meses não entregues, totalizando 29 arquivos.
 	
