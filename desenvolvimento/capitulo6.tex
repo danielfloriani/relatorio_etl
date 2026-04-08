@@ -2,11 +2,15 @@
 
 Este capítulo apresenta a análise crítica dos resultados obtidos com a implantação do \textit{pipeline} em ambiente de produção. O objetivo é avaliar a eficácia da solução proposta frente aos problemas de despadronização e morosidade detalhados no Capítulo 2, dimensionando os impactos quantitativos de desempenho e os ganhos qualitativos de governança de dados para a Veeries.
 
-\section{Impacto Operacional e Redução de Tempo de Processamento}
+\section{Impacto Operacional e Dimensionamento do Processamento}
 
-O benefício imediato e mais expressivo da automatização foi o ganho de eficiência temporal. No paradigma anterior, o responsável pela obtenção dos dados dedicava cerca de 3 horas de trabalho humano aplicados à leitura, transcrição e a algum tipo de validação não estruturada em um lote de relatórios. Com a nova arquitetura, o tempo de extração, validação, cruzamento e consolidação dos dados despencou para um intervalo de execução entre 2 a 5 segundos.
+O benefício imediato e mais expressivo da automatização foi o ganho de eficiência temporal em escala. No paradigma anterior, a equipe dedicava cerca de 3 horas de trabalho humano aplicadas à leitura, transcrição e validação não estruturada em cada lote mensal de relatórios. Com a nova arquitetura, o tempo de extração, validação, cruzamento e consolidação dos dados despencou para um intervalo de execução entre 2 a 5 segundos.
 
-Embora o monitoramento inicial da disponibilidade do dado permaneça uma etapa humana (uma vez que a fonte emissora não possui uma data previsível para a publicação dos relatórios), a natureza do trabalho do responsável pelos dados foi fundamentalmente transformada. A equipe deixou de atuar como "transcritora de dados" e assumiu o papel de curadoria e auditoria da informação. O esforço humano agora é alocado exclusivamente para interpretar o resultado do \textit{pipeline} e analisar os dados já consolidados.
+Para dimensionar o impacto quantitativo da solução, a consolidação da base histórica processou de forma automatizada documentos abrangendo o período de janeiro de 2023 a fevereiro de 2026. Devido ao padrão de republicação retroativa da Fonte X, o \textit{pipeline} ingere um volume massivo de documentos: são 144 arquivos anuais apenas para esta origem (divididos entre publicações mensais e acumuladas), o que resulta em picos de até 23 relatórios processados simultaneamente em um único mês. A Fonte Y, de publicação linear, agregou 29 documentos históricos ao escopo.
+
+Essa extração em larga escala gerou uma base rastreável de 24.588 registros consolidados na Camada \textit{Silver} (L1), sendo 23.270 provenientes da Fonte X e 1.318 da Fonte Y. Na Camada \textit{Gold} (L2), após a operação estrutural de despivoteamento (\textit{Melt}) das variáveis originais para 20 colunas de análise contínuas, o sistema computou um crescimento exponencial, validando 492.540 registros históricos no formato longo (sendo 238.260 registros mensais e 254.280 acumulados). 
+
+Por fim, o filtro lógico de deduplicação da Camada \textit{View} cumpriu o seu papel de abstrair a redundância gerada pela sobreposição de relatórios da fonte, entregando 29.322 instâncias definitivas (28.584 da Fonte X e 738 da Fonte Y). O esforço da equipe, portanto, deixou de ser a transcrição braçal de arquivos e passou a ser o consumo imediato de uma base cronologicamente atualizada de quase 30 mil linhas fidedignas prontas para as ferramentas de \textit{Business Intelligence}.
 
 \section{Governança, Resiliência e Tratamento de Exceções}
 
