@@ -3,9 +3,9 @@ para a fonte X
 	período do histórico: março de 2023 a janeiro de 2026
 	consolidação do histórico:
 	são 144 arquivos por ano completo, 78 da categoria mensal e 66 da categoria acumulado
-	o grande volume se dá por que a fonte, a cada mês que passa, repete a publicação dos relatórios anteriores do mesmo ano. então, para o mês de maio de 2024, serão recebidos 25 arquivos, 15 mensal e 10 acumulado.
+	o grande volume se dá por que a fonte, a cada mês que passa, repete a publicação dos relatórios anteriores do mesmo ano. então, para o mês de maio de 2024 por exemplo, serão recebidos 25 arquivos, 15 mensal e 10 acumulado.
 para a fonte Y
-	um arquivo da categoria mensal por mês de junho de 2023 a março de 2026, com excessão de alguns meses não entregues, totalizando 29 arquivos.
+	um arquivo da categoria mensal por mês de junho de 2023 a fevereiro de 2026, com excessão de alguns meses não entregues, totalizando 29 arquivos.
 	
 todos os arquivos são processados e levados até a L2 para guardar a informação que a fonte forneceu em todos os reports.
 
@@ -17,4 +17,44 @@ fonte Y:
     1318 registros (linhas) dentro do período
 
 L2
-fonte X
+> 20 colunas "derretidas"
+mensal
+238260 registros (linhas) dentro do período
+	211800 fonte X
+	 26460 fonte Y
+acumulado
+254280 registros (linhas) dentro do período
+	254280 fonte X
+VIEW
+29322 registros (linhas) dentro do período
+	28584 fonte X
+	  738 fonte Y
+
+
+
+
+
+
+
+
+
+
+
+rascunho
+https://github.com/danielfloriani/relatorio_etl/blob/main/main.tex
+https://github.com/danielfloriani/relatorio_etl/blob/main/resumo.tex
+https://github.com/danielfloriani/relatorio_etl/blob/main/abstract.tex
+https://github.com/danielfloriani/relatorio_etl/blob/main/listas.tex
+https://github.com/danielfloriani/relatorio_etl/blob/main/desenvolvimento/capitulo1.tex
+https://github.com/danielfloriani/relatorio_etl/blob/main/desenvolvimento/capitulo2.tex
+https://github.com/danielfloriani/relatorio_etl/blob/main/desenvolvimento/capitulo3.tex
+https://github.com/danielfloriani/relatorio_etl/blob/main/desenvolvimento/capitulo4.tex
+https://github.com/danielfloriani/relatorio_etl/blob/main/desenvolvimento/capitulo5.tex
+https://github.com/danielfloriani/relatorio_etl/blob/main/desenvolvimento/capitulo6.tex
+https://github.com/danielfloriani/relatorio_etl/blob/main/desenvolvimento/capitulo7.tex
+https://github.com/danielfloriani/relatorio_etl/blob/main/bibliografia.bib
+https://github.com/danielfloriani/relatorio_etl/blob/main/imagens/arquitetura.png
+https://github.com/danielfloriani/relatorio_etl/blob/main/imagens/fluxo_processamento.png
+https://github.com/danielfloriani/relatorio_etl/blob/main/imagens/horizontal_validation.png
+https://github.com/danielfloriani/relatorio_etl/blob/main/imagens/orquestrador_principal.png
+https://github.com/danielfloriani/relatorio_etl/blob/main/imagens/schema.png
