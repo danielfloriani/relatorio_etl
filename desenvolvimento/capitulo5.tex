@@ -15,9 +15,9 @@ Para estruturar as transformações, o projeto foi construído sobre dois pilare
 O código-fonte foi versionado utilizando a plataforma \textit{GitHub} e estruturado sob o paradigma de Programação Orientada a Objetos (POO), garantindo a modularidade e o reaproveitamento de rotinas entre diferentes origens de dados.
 
 \section{Orquestração e Ingestão (Camada \textit{Bronze})}
-
-O fluxo de execução do projeto é coordenado por \textit{scripts} orquestradores (\texttt{main\_source.py}), responsáveis por acionar os módulos sequencialmente e interromper o processo imediatamente caso ocorra uma falha crítica em qualquer camada.
-
+\begin{sloppypar}
+O fluxo de execução do projeto é coordenado por \textit{scripts} orquestradores \texttt{main\_source\_[X,Y].py}, responsáveis por acionar os módulos sequencialmente e interromper o processo imediatamente caso ocorra uma falha crítica em qualquer camada.
+\end{sloppypar}
 A primeira etapa do \textit{pipeline} é operada pelo módulo \texttt{l0\_process.py}. Este componente atua como o motor de ingestão da Camada \textit{Bronze} (L0). O seu papel principal é varrer os diretórios de entrada (\texttt{01\_RAW}), identificar novos relatórios em formato nativo e acionar os algoritmos de extração de texto (\textit{parsers}). 
 
 Optou-se por abstrair a complexidade visual dos relatórios originais logo no momento da ingestão. O \textit{parser} localiza os dados tabulares e os metadados primários (como a data de referência do relatório) e o módulo L0 salva essas informações no formato .CSV, mantendo a integridade exata do que foi lido (L0 Original). O armazenamento nesta camada utiliza um particionamento lógico em arquivos compactados organizados por ano e mês, otimizando o espaço em nuvem e facilitando a auditoria temporal.
